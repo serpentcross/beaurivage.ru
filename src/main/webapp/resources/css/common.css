@@ -70,3 +70,17 @@ body {
 .bg-info {
     background-color: #9f1005;
 }
+
+#circle4{
+    text-align: left;
+}
+
+.small-3{
+    display:inline-block;
+    width:13%;
+}
+
+.grow img{
+    width:100%;
+    height:auto;
+}

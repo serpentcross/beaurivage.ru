@@ -54,42 +54,35 @@
                 User ${pageContext.request.userPrincipal.name} in ADMIN Group
 
             </c:if>
-            <table class="table table-bordered">
-                <thead>
-                <tr class="bg-info">
-                    <th class="tg-s6z2">Время записи</th>
-                    <th class="tg-s6z2">Понедельник</th>
-                    <th class="tg-s6z2">Вторник</th>
-                    <th class="tg-s6z2">Среда</th>
-                    <th class="tg-s6z2">Четверг</th>
-                    <th class="tg-s6z2">Пятница</th>
-                    <th class="tg-s6z2">Суббота</th>
-                    <th class="tg-s6z2">Воскресенье</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>John</td>
-                    <td>Carter</td>
-                    <td>johncarter@mail.com</td>
-                    <td>1</td>
-                    <td>John</td>
-                    <td>Carter</td>
-                    <td>johncarter@mail.com</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Peter</td>
-                    <td>Parker</td>
-                    <td>peterparker@mail.com</td>
-                    <td>1</td>
-                    <td>John</td>
-                    <td>Carter</td>
-                    <td>johncarter@mail.com</td>
-                </tr>
-                </tbody>
-            </table>
+
+            <div class="row" id="circle4">
+                <div class="small-3 large-2 columns text-center">
+                    <div class="grow pic">ARN  o.s.w.s.PageNotFound#1136 No mapping found for HTTP request with URI [/favicon.ico] in DispatcherServlet with name 'dispatcher'
+                        Hibernate: select user0_.id as id1_1_, user0_.password as password2_1_, user0_.username as username3_1_ from user user0_ where user0_.username=?
+                        Hibernate: select roles0_.user_id as user_id1_1_0_, roles0_.role_id as role_id2_2_0_, role1_.id as id1_0_1_, role1_.name as name2_0_1_ from user_role roles0_ inner join role role1_ on roles0_.role_id=role1_.id where roles0_.user_id=?
+                    </div>
+                </div>
+                <div class="small-3 large-2 columns text-center">
+                    <div class="grow pic"><img src="http://lorempixel.com/400/400" /></div>
+                </div>
+                <div class="small-3 large-2 large-offset-2 columns text-center">
+                    <div class="grow pic"><img src="http://lorempixel.com/400/400" /></div>
+                </div>
+                <div class="small-3 large-2 columns text-center">
+                    <div class="grow pic"><img src="http://lorempixel.com/400/400" /></div>
+                </div>
+                <div class="small-3 large-2 columns text-center">
+                    <div class="grow pic">ARN  o.s.w.s.PageNotFound#1136 No mapping found for HTTP request with URI [/favicon.ico] in DispatcherServlet with name 'dispatcher'
+                        Hibernate: select roles0_.user_id as user_id1_1_0_, roles0_.role_id as role_id2_2_0_, role1_.id as id1_0_1_, role1_.name as name2_0_1_ from user_role roles0_ inner join role role1_ on roles0_.role_id=role1_.id where roles0_.user_id=?
+                    </div>
+                </div>
+                <div class="small-3 large-2 columns text-center">
+                    <div class="grow pic"><img src="http://lorempixel.com/400/400" /></div>
+                </div>
+                <div class="small-3 large-2 columns text-center">
+                    <div class="grow pic"><img src="http://lorempixel.com/400/400" /></div>
+                </div>
+            </div>
 
         </div>
         <!-- /container -->

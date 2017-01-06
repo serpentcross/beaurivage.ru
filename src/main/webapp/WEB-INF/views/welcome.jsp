@@ -2,91 +2,134 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-
 <!DOCTYPE html>
-    <html>
-        <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-            <meta name="description" content="">
-            <meta name="author" content="">
+<html lang="ru-ru" dir="ltr" class="uk-admin-background">
 
-            <title>Welcome</title>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>BEAU-RIVAGE</title>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon-precomposed" href="images/apple-touch-icon.png">
+        <link rel="stylesheet" href="${contextPath}/resources/css/bootstrap.min.css">
+        <link rel="stylesheet" href="${contextPath}/resources/css/uikit.min.css">
+        <link rel="stylesheet" href="${contextPath}/resources/css/beaurivage.css">
+        <link rel="stylesheet" href="${contextPath}/resources/css/tadle.css">
+        <script src="${contextPath}/resources/js/jquery-3.1.1.min.js"></script>
+        <script src="${contextPath}/resources/js/uikit.js"></script>
+        <script src="${contextPath}/resources/js/beaurivage.js"></script>
+    </head>
 
-            <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
-            <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
+    <body class="uk-font-days uk-padding-tm">
 
-            <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-            <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-            <![endif]-->
-        </head>
-        <body>
-        <div class="container">
-            <div class="form-group">
-                <label for="sel1">Select list:</label>
-                <select class="form-control" id="sel1">
-                    <option>Понедельник</option>
-                    <option>Вторник</option>
-                    <option>Среда</option>
-                    <option>Четверг</option>
-                    <option>Пятница</option>
-                    <option>Суббота</option>
-                    <option>Воскресенье</option>
-                </select>
-            </div>
-            Try it Yourself »
-
-            <c:if test="${pageContext.request.userPrincipal.name != null}">
-                <form id="logoutForm" method="POST" action="${contextPath}/logout">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <!-- ФИО, тел. e-mail -->
+        <div class="">
+            <div class="uk-container uk-container-center uk-text-center">
+                <form class="uk-form" id="customerData">
+                    <div class="uk-grid">
+                        <div class="uk-width-medium-1-4 uk-margin-top"><input type="text" id="customerName" placeholder="Имя" class="uk-width-medium-1-1"></div>
+                        <div class="uk-width-medium-1-4 uk-margin-top"><input type="text" id="customerSurname" placeholder="Фамилия" class="uk-width-medium-1-1"></div>
+                        <div class="uk-width-medium-1-4 uk-margin-top"><input type="text" id="customerMiddlename" placeholder="Отчество" class="uk-width-medium-1-1"></div>
+                        <div class="uk-width-medium-1-4 uk-margin-top"><input type="text" id="customerPhone" placeholder="Телефон" class="uk-width-medium-1-1"></div>
+                    </div>
                 </form>
+            </div>
+        </div>
+        <!-- Конец ФИО, тел. e-mail -->
 
-                <h2>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
+        <!-- ФИО, тел. e-mail -->
+        <div class="uk-margin-top">
+            <div class="uk-container uk-container-center uk-text-center">
+                <form class="uk-form uk-margin uk-form-stacked">
+                    <fieldset>
+                        <div class="uk-grid">
+                            <div class="uk-width-medium-1-3 uk-margin-top">
+                                <select id="dayOfWeek" class="uk-width-medium-1-1">
+                                    <option value="mon">Понедельник</option>
+                                    <option value="tue">Вторник</option>
+                                    <option value="wed">Среда</option>
+                                    <option value="thr">Четверг</option>
+                                    <option value="frd">Пятница</option>
+                                    <option value="sat">Суббота</option>
+                                    <option value="sun">Воскресенье</option>
+                                </select>
+                            </div>
+                            <div class="uk-width-medium-1-3 uk-margin-top">
+                                <input type="text" id="timeFr" placeholder="время начала приёма 00:00:00" class="uk-width-medium-1-1">
+                            </div>
+                            <div class="uk-width-medium-1-3 uk-margin-top">
+                                <input type="text" id="timeTo" placeholder="время конца приёма 00:00:00" class="uk-width-medium-1-1">
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                <div class="uk-width-medium-1-2 uk-container-center uk-margin-top">
+                    <input type="button" id="createRecord" class="uk-button uk-button-primary uk-width-medium-2-3" value="cоздать запись">
+                </div>
+            </div>
+        </div>
+        <!-- Конец ФИО, тел. e-mail -->
 
-            </c:if>
+        <!-- Таблица -->
+        <div class="uk-margin-top uk-padding-tm">
+            <div class="uk-container uk-container-center uk-text-center">
+                <div class="uk-flex uk-fl-sise" style="height: 100%; background: #fafafa;">
+                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary">ПОН<div id="record" class="uk-panel-time">9:00-12:00</div></div>
+                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary">ВТ</div>
+                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary">СР</div>
+                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary">ЧТ</div>
+                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary">ПТН</div>
+                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary">СБ</div>
+                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary">ВС</div>
+                </div>
+            </div>
+        </div>
+        <!-- Конец Таблицы -->
 
-            <c:if test="${pageContext.request.isUserInRole('ROLE_USER')}">
-
-                User ${pageContext.request.userPrincipal.name} in ADMIN Group
-
-            </c:if>
-
-            <div class="row" id="circle4">
-                <div class="small-3 large-2 columns text-center">
-                    <div class="grow pic">ARN  o.s.w.s.PageNotFound#1136 No mapping found for HTTP request with URI [/favicon.ico] in DispatcherServlet with name 'dispatcher'
-                        Hibernate: select user0_.id as id1_1_, user0_.password as password2_1_, user0_.username as username3_1_ from user user0_ where user0_.username=?
-                        Hibernate: select roles0_.user_id as user_id1_1_0_, roles0_.role_id as role_id2_2_0_, role1_.id as id1_0_1_, role1_.name as name2_0_1_ from user_role roles0_ inner join role role1_ on roles0_.role_id=role1_.id where roles0_.user_id=?
-                    </div>
+        <div id="popupWindow" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    sometext
                 </div>
-                <div class="small-3 large-2 columns text-center">
-                    <div class="grow pic"><img src="http://lorempixel.com/400/400" /></div>
-                </div>
-                <div class="small-3 large-2 large-offset-2 columns text-center">
-                    <div class="grow pic"><img src="http://lorempixel.com/400/400" /></div>
-                </div>
-                <div class="small-3 large-2 columns text-center">
-                    <div class="grow pic"><img src="http://lorempixel.com/400/400" /></div>
-                </div>
-                <div class="small-3 large-2 columns text-center">
-                    <div class="grow pic">ARN  o.s.w.s.PageNotFound#1136 No mapping found for HTTP request with URI [/favicon.ico] in DispatcherServlet with name 'dispatcher'
-                        Hibernate: select roles0_.user_id as user_id1_1_0_, roles0_.role_id as role_id2_2_0_, role1_.id as id1_0_1_, role1_.name as name2_0_1_ from user_role roles0_ inner join role role1_ on roles0_.role_id=role1_.id where roles0_.user_id=?
-                    </div>
-                </div>
-                <div class="small-3 large-2 columns text-center">
-                    <div class="grow pic"><img src="http://lorempixel.com/400/400" /></div>
-                </div>
-                <div class="small-3 large-2 columns text-center">
-                    <div class="grow pic"><img src="http://lorempixel.com/400/400" /></div>
+                <div class="modal-body">
+                    <p>Some text in the Modal Body</p>
+                    <p>Some other text...</p>
+                    <input type="button" onclick="closeModal()" value="close">
                 </div>
             </div>
 
         </div>
-        <!-- /container -->
-        <script src="${contextPath}/resources/js/jquery-3.1.1.slim.min.js"></script>
-        <script src="${contextPath}/resources/js/bootstrap.min.js"></script>
-        </body>
-    </html>
+
+        <c:if test="${pageContext.request.userPrincipal.name != null}">
+            <form id="logoutForm" method="POST" action="${contextPath}/logout">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            </form>
+
+            <h2>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
+
+        </c:if>
+
+        <script>
+            // Get the modal
+            var modal = document.getElementById('popupWindow');
+
+            // Get the button that opens the modal
+            var btn = document.getElementById("record");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks the button, open the modal
+            btn.onclick = function() {
+                modal.style.display = "block";
+            };
+
+            // When the user clicks on <span> (x), close the modal
+            function closeModal() {
+                modal.style.display = "none";
+            }
+
+        </script>
+
+    </body>
+</html>

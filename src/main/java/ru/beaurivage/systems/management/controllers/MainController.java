@@ -22,8 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/welcome")
 public class MainController {
 
-    @Autowired
-    CustomerRecordDAO customerRecordDAO;
+    @Autowired CustomerRecordDAO customerRecordDAO;
 
     @RequestMapping(value = "/test", method = RequestMethod.POST, produces="application/json", consumes="application/json")
     public void getSomething(@RequestBody Some some) {

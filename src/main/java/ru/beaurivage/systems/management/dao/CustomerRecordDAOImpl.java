@@ -12,6 +12,6 @@ public class CustomerRecordDAOImpl implements CustomerRecordDAO {
 
     @Override
     public void postRecord(CustomerRecord customerRecord) {
-
+        System.out.println("sdfsfsd");
     }
 }

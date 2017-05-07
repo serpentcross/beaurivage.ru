@@ -30,14 +30,13 @@ $(document).ready(function() {
 
         var obj = JSON.stringify(record);
         alert(rootURL + "makerecord");
-        $.post(
-            rootURL + "makerecord",
-            {
-                myData: obj,
-                dataType: "json"
-            },
-            function(success) {
-                alert('Ваша подписка на рассылку активирована! '+success);
+        $.ajax({
+            dataType: "JSON",
+            contentType: 'application/json',
+            type: "POST",
+            url: rootURL + "/welcome/makerecord",
+            data: obj}).then(function(success) {
+                alert('Ваша подписка на рассылку активирована! '+ success);
                 window.location.href = 'customerzone';
             }
         );

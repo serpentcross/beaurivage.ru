@@ -4,40 +4,35 @@ $(document).ready(function() {
 
     $("#createRecord").click(function() {
 
-        var customerName = $("#customerName").val();
-        var customerSurname = $("#customerSurname").val();
-        var customerMiddlename = $("#customerMiddlename").val();
-        var customerPhone = $("#customerPhone").val();
+        var customer = {};
 
-        var dayOfWeek = $("#dayOfWeek").val();
-        var timeFr = $("#timeFr").val();
-        var timeTo = $("#timeTo").val();
+        customer.firstName = $("#customerName").val();
+        customer.middleName = $("#customerMiddlename").val();
+        customer.lastName = $("#customerSurname").val();
+        customer.phone = $("#customerPhone").val();
 
-        var customer = new Object();
+        var recordModel = {};
 
-        customer.first_name = customerName;
-        customer.middle_name = customerMiddlename;
-        customer.last_name = customerSurname;
-        customer.phone = customerPhone;
+        recordModel.customer = customer;
+        recordModel.day = $("#dayOfWeek").val();
+        recordModel.time_from = $("#timeFr").val();
+        recordModel.time_to = $("#timeTo").val();
 
-        var record = new Object();
-
-        record.customer = customer;
-        record.day = dayOfWeek;
-        record.time_from = timeFr;
-        record.time_to = timeTo;
-
-
-        var obj = JSON.stringify(record);
-        alert(rootURL + "makerecord");
+        var record = JSON.stringify(recordModel);
         $.ajax({
-            dataType: "JSON",
+            dataType: "json",
             contentType: 'application/json',
-            type: "POST",
+            type: "post",
             url: rootURL + "/welcome/makerecord",
-            data: obj}).then(function(success) {
-                alert('Ваша подписка на рассылку активирована! '+ success);
-                window.location.href = 'customerzone';
+            data: record
+        }).then(
+            function(response) {
+                UIkit.notification({
+                    message: response.message,
+                    status: 'primary',
+                    pos: 'top-center',
+                    timeout: 5000
+                });
             }
         );
     });

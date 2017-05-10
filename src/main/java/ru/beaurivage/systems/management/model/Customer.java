@@ -16,7 +16,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "customer")
-class Customer implements Serializable {
+public class Customer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -4,25 +4,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.http.MediaType;
 import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ru.beaurivage.systems.management.dao.CustomerRecordDAO;
+import org.springframework.web.bind.annotation.RestController;
+import ru.beaurivage.systems.management.dao.RecordDAO;
 import ru.beaurivage.systems.management.model.ApiMember;
-import ru.beaurivage.systems.management.model.CustomerRecord;
 import ru.beaurivage.systems.management.model.Record;
+import ru.beaurivage.systems.management.model.Response;
 import ru.beaurivage.systems.management.model.Some;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Controller
+@RestController
 @RequestMapping("/welcome")
 public class MainController {
 
-    @Autowired CustomerRecordDAO customerRecordDAO;
+    @Autowired RecordDAO recordDAO;
 
     @RequestMapping(value = "/test", method = RequestMethod.POST, produces="application/json", consumes="application/json")
     public void getSomething(@RequestBody Some some) {
@@ -31,11 +31,9 @@ public class MainController {
     }
 
 
-    @RequestMapping(value = "/makerecord", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void postRecord(@ModelAttribute Record record) throws ParseException {
-        System.out.println("MAKE RECORD");
-        System.out.println("sdsdf");
-        System.out.println(record);
+    @RequestMapping(value = "/makerecord", method = RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE, consumes="application/json")
+    public Response postRecord(@RequestBody Record record) throws ParseException {
+        return recordDAO.save(record);
     }
 
     @RequestMapping(value = "/api/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

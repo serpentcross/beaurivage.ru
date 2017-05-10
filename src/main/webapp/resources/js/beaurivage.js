@@ -27,12 +27,7 @@ $(document).ready(function() {
             data: record
         }).then(
             function(response) {
-                UIkit.notification({
-                    message: response.message,
-                    status: 'primary',
-                    pos: 'top-center',
-                    timeout: 5000
-                });
+                UIkit.notify({message: response.message, status: 'info', timeout: 5000, pos: 'top-center'});
             }
         );
     });

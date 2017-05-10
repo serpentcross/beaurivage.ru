@@ -13,10 +13,12 @@
         <link rel="apple-touch-icon-precomposed" href="images/apple-touch-icon.png">
         <link rel="stylesheet" href="${contextPath}/resources/css/bootstrap.min.css">
         <link rel="stylesheet" href="${contextPath}/resources/css/uikit.min.css">
+        <link rel="stylesheet" href="${contextPath}/resources/css/uikit/components/notify.min.css">
         <link rel="stylesheet" href="${contextPath}/resources/css/beaurivage.css">
         <link rel="stylesheet" href="${contextPath}/resources/css/tadle.css">
         <script src="${contextPath}/resources/js/jquery-3.1.1.min.js"></script>
         <script src="${contextPath}/resources/js/uikit.js"></script>
+        <script src="${contextPath}/resources/js/components/notify.min.js"></script>
         <script src="${contextPath}/resources/js/beaurivage.js"></script>
     </head>
 

@@ -10,6 +10,12 @@ import ru.beaurivage.systems.management.model.Response;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -56,5 +62,19 @@ public class RecordDAOImpl implements RecordDAO {
 		response.setErrcode(0);
 
 		return response;
+	}
+
+	@Override
+	public List<Record> loadAllRecords() {
+
+		CriteriaBuilder qb = em.getCriteriaBuilder();
+		CriteriaQuery<Record> criteriaQuery = qb.createQuery(Record.class);
+		Root<Record> root = criteriaQuery.from(Record.class);
+		CriteriaQuery<Record> all = criteriaQuery.select(root);
+		TypedQuery<Record> allQuery = em.createQuery(all);
+
+		List<Record> records = allQuery.getResultList();
+
+		return records;
 	}
 }

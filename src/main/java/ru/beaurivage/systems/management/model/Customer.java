@@ -41,9 +41,10 @@ public class Customer implements Serializable {
     @Getter @Setter
     private String phone;
 
-    @Column(name = "email")
-    @Getter @Setter
-    private String email;
+//    @Column(name = "email")
+//    @Getter @Setter
+//    private String email;
+
 
     @Override
     public boolean equals(Object o) {
@@ -54,20 +55,18 @@ public class Customer implements Serializable {
 
         if (!id.equals(customer.id)) return false;
         if (!firstName.equals(customer.firstName)) return false;
-        if (middleName != null ? !middleName.equals(customer.middleName) : customer.middleName != null) return false;
-        if (lastName != null ? !lastName.equals(customer.lastName) : customer.lastName != null) return false;
-        if (phone != null ? !phone.equals(customer.phone) : customer.phone != null) return false;
-        return email != null ? email.equals(customer.email) : customer.email == null;
+        if (!middleName.equals(customer.middleName)) return false;
+        if (!lastName.equals(customer.lastName)) return false;
+        return phone.equals(customer.phone);
     }
 
     @Override
     public int hashCode() {
         int result = id.hashCode();
         result = 31 * result + firstName.hashCode();
-        result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + (phone != null ? phone.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + middleName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        result = 31 * result + phone.hashCode();
         return result;
     }
 }

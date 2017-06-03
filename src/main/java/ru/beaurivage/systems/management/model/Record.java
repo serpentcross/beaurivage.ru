@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,13 +29,12 @@ public class Record implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonIgnore
-	@JsonIgnoreProperties("id")
     @Getter @Setter
     private Long id;
 
-    @ManyToOne(fetch= FetchType.LAZY)
+    @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="customer")
+	@JsonIgnoreProperties("id")
     @Getter @Setter
     private Customer customer;
 

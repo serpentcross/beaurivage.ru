@@ -1,8 +1,11 @@
 package ru.beaurivage.systems.management.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.expression.ParseException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +20,7 @@ import ru.beaurivage.systems.management.model.Response;
 import ru.beaurivage.systems.management.model.Some;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/welcome")
@@ -48,5 +52,14 @@ public class MainController {
     String getCsrfToken(HttpServletRequest request) {
         CsrfToken token = (CsrfToken)request.getAttribute(CsrfToken.class.getName());
         return token.getToken();
+    }
+
+    @RequestMapping(value = "/records", method = RequestMethod.GET)
+    public ResponseEntity<List<Record>> loadMessages() throws DataAccessException {
+        List<Record> messages = recordDAO.loadAllRecords();
+        if(messages.isEmpty()){
+            return new ResponseEntity<List<Record>>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Record>>(messages, HttpStatus.OK);
     }
 }

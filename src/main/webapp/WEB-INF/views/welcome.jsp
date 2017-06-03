@@ -75,14 +75,14 @@
         <!-- Таблица -->
         <div class="uk-margin-top uk-padding-tm">
             <div class="uk-container uk-container-center uk-text-center">
-                <div class="uk-flex uk-fl-sise" style="height: 100%; background: #fafafa;">
-                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary">ПОН<div id="record" class="uk-panel-time">9:00-12:00</div></div>
-                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary">ВТ</div>
-                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary">СР</div>
-                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary">ЧТ</div>
-                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary">ПТН</div>
-                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary">СБ</div>
-                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary">ВС</div>
+                <div id="maintable" class="uk-flex uk-fl-sise" style="height: 100%; background: #fafafa;">
+                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary" id="mon">ПОН<div id="record" class="uk-panel-time">9:00-12:00</div></div>
+                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary" id="tue">ВТ</div>
+                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary" id="wed">СР</div>
+                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary" id="thr">ЧТ</div>
+                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary" id="frd">ПТН</div>
+                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary" id="sat">СБ</div>
+                    <div class="uk-width-medium-1-7 uk-panel uk-panel-box uk-panel-box-primary" id="sun">ВС</div>
                 </div>
             </div>
         </div>
@@ -113,23 +113,23 @@
 
         <script>
             // Get the modal
-            var modal = document.getElementById('popupWindow');
+            //var modal = document.getElementById('popupWindow');
 
             // Get the button that opens the modal
-            var btn = document.getElementById("record");
+            //var btn = document.getElementById("record");
 
             // Get the <span> element that closes the modal
-            var span = document.getElementsByClassName("close")[0];
+            //var span = document.getElementsByClassName("close")[0];
 
             // When the user clicks the button, open the modal
-            btn.onclick = function() {
-                modal.style.display = "block";
-            };
+//            btn.onclick = function() {
+//                modal.style.display = "block";
+//            };
 
             // When the user clicks on <span> (x), close the modal
-            function closeModal() {
-                modal.style.display = "none";
-            }
+//            function closeModal() {
+//                modal.style.display = "none";
+//            }
 
         </script>
 

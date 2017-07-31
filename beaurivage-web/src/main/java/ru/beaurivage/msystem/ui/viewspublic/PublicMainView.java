@@ -26,7 +26,6 @@ import ru.beaurivage.msystem.ui.constants.UILegend;
 
 import java.io.File;
 
-@CDIView("main")
 public class PublicMainView extends CustomComponent implements View {
 
     public PublicMainView() {

@@ -27,6 +27,7 @@ import ru.beaurivage.msystem.ui.constants.UILegend;
 import ru.beaurivage.msystem.ui.constants.ViewsNaming;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Theme("beaurivage")
 public class SecuredPatientsView extends CustomComponent implements View {
@@ -53,6 +54,8 @@ public class SecuredPatientsView extends CustomComponent implements View {
     private Grid<Patient> patientsTable;
 
     public SecuredPatientsView() {
+
+        setStyleName("background-main-color");
 
         patientDAO = EjbUtil.getLocalBean(PatientDAO.class);
 
@@ -174,6 +177,7 @@ public class SecuredPatientsView extends CustomComponent implements View {
         patient.setLastName(surnTxtFld.getValue());
         patient.setMiddleName(middTxtFld.getValue());
         patient.setPhone(phoneTxtFld.getValue());
+        patient.setBirthDate(brdtTxtFld.getValue());
         patient.setEmail(emailTxtFld.getValue());
 
         patientDAO.save(patient);
@@ -197,7 +201,7 @@ public class SecuredPatientsView extends CustomComponent implements View {
         patientsTable.addColumn(Patient::getLastName).setCaption("Фамилия").setWidth(150).setId("3");
         patientsTable.addColumn(Patient::getMiddleName).setCaption("Отчество").setWidth(150).setId("4");
         patientsTable.addColumn(Patient::getPhone).setCaption("Телефон").setWidth(150).setId("5");
-        patientsTable.addColumn(Patient::getMiddleName).setCaption("Дата рождения").setWidth(150).setId("6");
+        patientsTable.addColumn(d-> d.getBirthDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).setCaption("Дата рождения").setWidth(150).setId("6");
         patientsTable.addColumn(Patient::getEmail).setCaption("Email").setId("7");
 
         for (Grid.Column singleColumn : patientsTable.getColumns()) {

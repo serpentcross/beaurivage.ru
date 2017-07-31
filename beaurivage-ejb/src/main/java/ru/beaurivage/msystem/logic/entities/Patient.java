@@ -9,7 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "patient")
@@ -21,33 +23,31 @@ public class Patient implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
-    @Setter
+    @Getter @Setter
     private Long id;
 
     @Column(name = "first_name")
-    @Getter
-    @Setter
+    @Getter @Setter
     private String firstName;
 
     @Column(name = "middle_name")
-    @Getter
-    @Setter
+    @Getter @Setter
     private String middleName;
 
     @Column(name = "last_name")
-    @Getter
-    @Setter
+    @Getter @Setter
     private String lastName;
 
     @Column(name = "phone")
-    @Getter
-    @Setter
+    @Getter @Setter
     private String phone;
 
+    @Column(name = "birth_date")
+    @Getter @Setter
+    private LocalDate birthDate;
+
     @Column(name = "email")
-    @Getter
-    @Setter
+    @Getter @Setter
     private String email;
 
     @Override

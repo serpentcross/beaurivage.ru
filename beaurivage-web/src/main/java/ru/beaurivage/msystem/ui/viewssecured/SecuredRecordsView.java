@@ -60,6 +60,8 @@ public class SecuredRecordsView extends CustomComponent implements View {
 
     public SecuredRecordsView() {
 
+        setStyleName("background-main-color");
+
         ArrayList<String> timeOptionList = new ArrayList<String>() {{
             add("10:00");
             add("11:00");

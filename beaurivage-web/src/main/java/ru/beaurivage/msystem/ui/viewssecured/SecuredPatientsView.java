@@ -107,7 +107,7 @@ public class SecuredPatientsView extends CustomComponent implements View {
         brdtTxtFld.setValue(LocalDate.now());
         brdtTxtFld.setDateFormat("dd-MM-yyyy");
         
-        addPatientBtn = new Button("внести нового пациента", e -> createCustomer());
+        addPatientBtn = new Button("внести нового пациента", this::createPatient);
         addPatientBtn.setWidth(CssStyles.WIDTH_100_PERCENTS);
         addPatientBtn.setStyleName(CssStyles.ML_BUTTON_8);
 
@@ -166,7 +166,7 @@ public class SecuredPatientsView extends CustomComponent implements View {
         refreshPatientsTable();
     }
 
-    private void createCustomer() {
+    private void createPatient(Button.ClickEvent event) {
 
         Patient patient = new Patient();
 

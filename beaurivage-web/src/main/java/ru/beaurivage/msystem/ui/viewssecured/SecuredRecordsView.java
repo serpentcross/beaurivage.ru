@@ -40,7 +40,7 @@ public class SecuredRecordsView extends CustomComponent implements View {
     private RecordDAO recordDAO;
 
     private GridLayout navigationOptionsLayout;
-    private GridLayout newCustomerOptionsContainer;
+    private GridLayout newPatientOptionsContainer;
 
     private ComboBox<Patient> prevPatientFld;
 
@@ -57,8 +57,6 @@ public class SecuredRecordsView extends CustomComponent implements View {
 
     private Button addRecordBtn;
     private Grid<Record> recordsTable;
-
-    private boolean customerAlreadyExists;
 
     public SecuredRecordsView() {
 
@@ -152,28 +150,28 @@ public class SecuredRecordsView extends CustomComponent implements View {
             Notification.show(selectedRecord.getPatient().getFirstName() + " items selected");
         });
 
-        newCustomerOptionsContainer = new GridLayout(3,6);
-        newCustomerOptionsContainer.setSpacing(true);
-        newCustomerOptionsContainer.setSizeFull();
-        newCustomerOptionsContainer.addComponent(prevPatientFld, 0,0,2,0);
-        newCustomerOptionsContainer.setComponentAlignment(prevPatientFld, Alignment.TOP_CENTER);
+        newPatientOptionsContainer = new GridLayout(3,6);
+        newPatientOptionsContainer.setSpacing(true);
+        newPatientOptionsContainer.setSizeFull();
+        newPatientOptionsContainer.addComponent(prevPatientFld, 0,0,2,0);
+        newPatientOptionsContainer.setComponentAlignment(prevPatientFld, Alignment.TOP_CENTER);
 
-        newCustomerOptionsContainer.addComponent(dateTxtFld, 0, 1);
+        newPatientOptionsContainer.addComponent(dateTxtFld, 0, 1);
 
-        newCustomerOptionsContainer.addComponent(timeFrTxtFld, 1,1);
-        newCustomerOptionsContainer.addComponent(timeToTxtFld, 2,1);
+        newPatientOptionsContainer.addComponent(timeFrTxtFld, 1,1);
+        newPatientOptionsContainer.addComponent(timeToTxtFld, 2,1);
 
-        newCustomerOptionsContainer.addComponent(addRecordBtn, 0,3,2,3);
-        newCustomerOptionsContainer.addComponent(recordsTable, 0,5,2,5);
+        newPatientOptionsContainer.addComponent(addRecordBtn, 0,3,2,3);
+        newPatientOptionsContainer.addComponent(recordsTable, 0,5,2,5);
 
-        newCustomerOptionsContainer.setComponentAlignment(dateTxtFld, Alignment.TOP_LEFT);
-        newCustomerOptionsContainer.setComponentAlignment(timeFrTxtFld, Alignment.TOP_CENTER);
-        newCustomerOptionsContainer.setComponentAlignment(timeToTxtFld, Alignment.TOP_RIGHT);
+        newPatientOptionsContainer.setComponentAlignment(dateTxtFld, Alignment.TOP_LEFT);
+        newPatientOptionsContainer.setComponentAlignment(timeFrTxtFld, Alignment.TOP_CENTER);
+        newPatientOptionsContainer.setComponentAlignment(timeToTxtFld, Alignment.TOP_RIGHT);
 
-        newCustomerOptionsContainer.setComponentAlignment(addRecordBtn, Alignment.TOP_CENTER);
+        newPatientOptionsContainer.setComponentAlignment(addRecordBtn, Alignment.TOP_CENTER);
 
-        VerticalLayout basicLayout = new VerticalLayout(navigationOptionsLayout, newCustomerOptionsContainer);
-        basicLayout.setComponentAlignment(newCustomerOptionsContainer, Alignment.TOP_CENTER);
+        VerticalLayout basicLayout = new VerticalLayout(navigationOptionsLayout, newPatientOptionsContainer);
+        basicLayout.setComponentAlignment(newPatientOptionsContainer, Alignment.TOP_CENTER);
         basicLayout.setComponentAlignment(navigationOptionsLayout, Alignment.TOP_CENTER);
 
         basicLayout.setSizeFull();

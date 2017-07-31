@@ -12,11 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "record")
@@ -44,8 +41,8 @@ public class Record implements Serializable {
     private LocalDate recDate;
 
     @ManyToOne(fetch= FetchType.EAGER)
-    @JoinColumn(name="customer")
+    @JoinColumn(name= "patient")
     @Getter @Setter
-    private Customer customer;
+    private Patient patient;
 
 }

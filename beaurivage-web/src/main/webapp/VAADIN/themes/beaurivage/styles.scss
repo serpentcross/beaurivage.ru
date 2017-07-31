@@ -3,6 +3,10 @@
 .beaurivage {
     @include valo;
 
+    .header-align-center {
+        text-align: center;
+    }
+
     .background-main-color {
         background-color: #f5ebe9;
     }

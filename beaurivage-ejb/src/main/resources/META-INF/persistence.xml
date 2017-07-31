@@ -3,6 +3,7 @@
     <persistence-unit name="beaurivage">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <jta-data-source>java:/beaurivage</jta-data-source>
+        <class>ru.beaurivage.msystem.logic.entities.Patient</class>
         <class>ru.beaurivage.msystem.logic.entities.Record</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>

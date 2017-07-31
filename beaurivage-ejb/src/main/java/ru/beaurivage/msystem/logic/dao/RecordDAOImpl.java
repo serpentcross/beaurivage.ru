@@ -19,12 +19,12 @@ public class RecordDAOImpl implements RecordDAO {
     private EntityManager em;
 
     @EJB
-    private CustomerDAO customerDAO;
+    private PatientDAO patientDAO;
 
     @Override
     public void save(Record record) {
         if (record != null) {
-            customerDAO.save(record.getCustomer());
+            patientDAO.save(record.getPatient());
             if (record.getId() == null) {
                 insert(record);
             } else {

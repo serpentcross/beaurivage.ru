@@ -20,6 +20,8 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import ru.beaurivage.msystem.logic.services.AuthService;
 import ru.beaurivage.msystem.ui.VaadinUI;
+import ru.beaurivage.msystem.ui.constants.CssStyles;
+import ru.beaurivage.msystem.ui.constants.Notifications;
 import ru.beaurivage.msystem.ui.constants.UILegend;
 
 import java.io.File;
@@ -29,7 +31,7 @@ public class PublicMainView extends CustomComponent implements View {
 
     public PublicMainView() {
 
-        setWidth("100%");
+        setWidth(CssStyles.WIDTH_100_PERCENTS);
 
         TextField usernameField = new TextField();
         usernameField.setPlaceholder(UILegend.UNAME_TEXTBOX);
@@ -73,7 +75,7 @@ public class PublicMainView extends CustomComponent implements View {
             VaadinUI ui = (VaadinUI) UI.getCurrent();
             ui.showPrivateComponent();
         } else {
-            Notification.show("Invalid credentials (for demo use: admin/password)", Notification.Type.ERROR_MESSAGE);
+            Notification.show(Notifications.INVALID_CREDENTIALS, Notification.Type.ERROR_MESSAGE);
         }
     }
 

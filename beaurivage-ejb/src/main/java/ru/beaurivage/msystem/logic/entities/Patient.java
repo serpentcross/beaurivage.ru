@@ -12,10 +12,10 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "customer")
-public class Customer implements Serializable {
+@Table(name = "patient")
+public class Patient implements Serializable {
 
-    public Customer() {
+    public Patient() {
 
     }
 
@@ -55,14 +55,14 @@ public class Customer implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Customer customer = (Customer) o;
+        Patient patient = (Patient) o;
 
-        if (!id.equals(customer.id)) return false;
-        if (!firstName.equals(customer.firstName)) return false;
-        if (middleName != null ? !middleName.equals(customer.middleName) : customer.middleName != null) return false;
-        if (!lastName.equals(customer.lastName)) return false;
-        if (!phone.equals(customer.phone)) return false;
-        return email != null ? email.equals(customer.email) : customer.email == null;
+        if (!id.equals(patient.id)) return false;
+        if (!firstName.equals(patient.firstName)) return false;
+        if (middleName != null ? !middleName.equals(patient.middleName) : patient.middleName != null) return false;
+        if (!lastName.equals(patient.lastName)) return false;
+        if (!phone.equals(patient.phone)) return false;
+        return email != null ? email.equals(patient.email) : patient.email == null;
     }
 
     @Override

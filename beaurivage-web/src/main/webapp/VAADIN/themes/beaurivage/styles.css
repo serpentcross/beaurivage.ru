@@ -12413,6 +12413,10 @@ div.v-layout.v-horizontal.v-widget {
 	overflow: hidden;
 }
 
+.beaurivage .header-align-center {
+	text-align: center;
+}
+
 .beaurivage .background-main-color {
 	background-color: #f5ebe9;
 }

@@ -5,6 +5,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
 import com.vaadin.shared.Position;
+
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -14,16 +15,19 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-import ru.beaurivage.msystem.logic.dao.CustomerDAO;
+import ru.beaurivage.msystem.logic.dao.PatientDAO;
 import ru.beaurivage.msystem.logic.dao.RecordDAO;
-import ru.beaurivage.msystem.logic.entities.Customer;
+import ru.beaurivage.msystem.logic.entities.Patient;
 import ru.beaurivage.msystem.logic.entities.Record;
 import ru.beaurivage.msystem.logic.services.AuthService;
 import ru.beaurivage.msystem.logic.util.EjbUtil;
-import ru.beaurivage.msystem.ui.constants.UILegend;
+
+import ru.beaurivage.msystem.ui.VaadinUI;
+import ru.beaurivage.msystem.ui.constants.CssStyles;
+import ru.beaurivage.msystem.ui.constants.Notifications;
+import ru.beaurivage.msystem.ui.constants.ViewsNaming;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -32,16 +36,14 @@ import java.util.ArrayList;
 @Theme("beaurivage")
 public class SecuredRecordsView extends CustomComponent implements View {
 
-    private CustomerDAO customerDAO;
+    private PatientDAO patientDAO;
     private RecordDAO recordDAO;
 
-    private ComboBox<Customer> prevCusFld;
+    private GridLayout navigationOptionsLayout;
+    private GridLayout newCustomerOptionsContainer;
 
-    private TextField nameTxtFld;
-    private TextField surnTxtFld;
-    private TextField middTxtFld;
-    private TextField phoneTxtFld;
-    private TextField emailTxtFld;
+    private ComboBox<Patient> prevPatientFld;
+
     private DateField dateTxtFld;
 
     private ComboBox<String> timeFrTxtFld;
@@ -51,10 +53,10 @@ public class SecuredRecordsView extends CustomComponent implements View {
     private Button navServicesTableBtn;
     private Button logOutBtn;
 
-    private Label hBar;
+    private Label horizontalBar;
 
     private Button addRecordBtn;
-    private Grid<Record> grid;
+    private Grid<Record> recordsTable;
 
     private boolean customerAlreadyExists;
 
@@ -76,135 +78,103 @@ public class SecuredRecordsView extends CustomComponent implements View {
             add("22:00");
         }};
 
-        customerDAO = EjbUtil.getLocalBean(CustomerDAO.class);
+        patientDAO = EjbUtil.getLocalBean(PatientDAO.class);
         recordDAO = EjbUtil.getLocalBean(RecordDAO.class);
 
-        prevCusFld = new ComboBox<>();
-        prevCusFld.setItems(customerDAO.getAll());
-        prevCusFld.setPlaceholder("Поиск ранее записанного пациента");
-        prevCusFld.setWidth("100%");
-        prevCusFld.setEmptySelectionAllowed(true);
+        prevPatientFld = new ComboBox<>();
+        prevPatientFld.setItems(patientDAO.getAll());
+        prevPatientFld.setPlaceholder("Поиск ранее записанного пациента");
+        prevPatientFld.setWidth(CssStyles.WIDTH_100_PERCENTS);
+        prevPatientFld.setEmptySelectionAllowed(true);
 
-        prevCusFld.setItemCaptionGenerator(
+        prevPatientFld.setItemCaptionGenerator(
             p -> p.getLastName() + " " + p.getFirstName() + " " + p.getMiddleName() + " " + p.getPhone() + " " + p.getEmail()
         );
 
-        prevCusFld.addValueChangeListener(
-            e -> inputNewCustomer()
-        );
+        horizontalBar = new Label();
+        horizontalBar.setStyleName("horizontalRule");
 
-        GridLayout viewOptionsLayout = new GridLayout(3, 2);
-        //viewOptionsLayout.setMargin(true);
-        viewOptionsLayout.setSpacing(true);
-        viewOptionsLayout.setSizeFull();
+        navPatientsTableBtn = new Button("пациенты", this::navigateToPatientsOptions);
+        navPatientsTableBtn.setWidth(CssStyles.WIDTH_250_PX);
 
-        hBar = new Label();
-        hBar.setStyleName("horizontalRule");
+        navServicesTableBtn = new Button("услуги", this::navigateToServicesOptions);
+        navServicesTableBtn.setWidth(CssStyles.WIDTH_250_PX);
 
         logOutBtn = new Button("выход", this::onLogout);
-        logOutBtn.setWidth("250px");
+        logOutBtn.setWidth(CssStyles.WIDTH_250_PX);
         logOutBtn.setStyleName("ml-button-13");
 
-        navPatientsTableBtn = new Button("пациенты");
-        navPatientsTableBtn.setWidth("250px");
+        navigationOptionsLayout = new GridLayout(3, 2);
+        navigationOptionsLayout.setSpacing(true);
+        navigationOptionsLayout.setSizeFull();
 
-        navServicesTableBtn = new Button("услуги");
-        navServicesTableBtn.setWidth("250px");
-
-        viewOptionsLayout.addComponent(navPatientsTableBtn,0,0);
-        viewOptionsLayout.addComponent(navServicesTableBtn,1,0);
-        viewOptionsLayout.addComponent(logOutBtn,2,0);
-        viewOptionsLayout.setComponentAlignment(navPatientsTableBtn, Alignment.TOP_LEFT);
-        viewOptionsLayout.setComponentAlignment(navServicesTableBtn, Alignment.TOP_CENTER);
-        viewOptionsLayout.setComponentAlignment(logOutBtn, Alignment.TOP_RIGHT);
-        viewOptionsLayout.addComponent(hBar, 0,1,2,1);
-
-
-        GridLayout newCustomerOptionsContainer = new GridLayout(3,6);
-        newCustomerOptionsContainer.setSpacing(true);
-        newCustomerOptionsContainer.setSizeFull();
-        newCustomerOptionsContainer.addComponent(prevCusFld, 0,0,2,0);
-        newCustomerOptionsContainer.setComponentAlignment(prevCusFld, Alignment.TOP_CENTER);
-
-        nameTxtFld = new TextField();
-        nameTxtFld.setPlaceholder(UILegend.TXT_FIELD_NAME);
-        nameTxtFld.setWidth("250px");
-
-        surnTxtFld = new TextField();
-        surnTxtFld.setPlaceholder(UILegend.TXT_FIELD_SURN);
-        surnTxtFld.setWidth("250px");
-
-        middTxtFld = new TextField();
-        middTxtFld.setPlaceholder(UILegend.TXT_FIELD_MIDD);
-        middTxtFld.setWidth("250px");
-
-        phoneTxtFld = new TextField();
-        phoneTxtFld.setPlaceholder(UILegend.TXT_FIELD_PHONE);
-        phoneTxtFld.setWidth("250px");
-
-        emailTxtFld = new TextField();
-        emailTxtFld.setPlaceholder(UILegend.TXT_FIELD_EMAIL);
-        emailTxtFld.setWidth("250px");
+        navigationOptionsLayout.addComponent(navPatientsTableBtn,0,0);
+        navigationOptionsLayout.addComponent(navServicesTableBtn,1,0);
+        navigationOptionsLayout.addComponent(logOutBtn,2,0);
+        navigationOptionsLayout.setComponentAlignment(navPatientsTableBtn, Alignment.TOP_LEFT);
+        navigationOptionsLayout.setComponentAlignment(navServicesTableBtn, Alignment.TOP_CENTER);
+        navigationOptionsLayout.setComponentAlignment(logOutBtn, Alignment.TOP_RIGHT);
+        navigationOptionsLayout.addComponent(horizontalBar, 0,1,2,1);
 
         dateTxtFld = new DateField();
         dateTxtFld.setPlaceholder("dd-MM-yyyy");
-        dateTxtFld.setWidth("250px");
+        dateTxtFld.setWidth(CssStyles.WIDTH_250_PX);
         dateTxtFld.setValue(LocalDate.now());
         dateTxtFld.setDateFormat("dd-MM-yyyy");
 
         timeFrTxtFld = new ComboBox<>();
         timeFrTxtFld.setItems(timeOptionList);
         timeFrTxtFld.setPlaceholder("время начала приёма");
-        timeFrTxtFld.setWidth("250px");
+        timeFrTxtFld.setWidth(CssStyles.WIDTH_250_PX);
         timeFrTxtFld.setEmptySelectionAllowed(false);
         timeFrTxtFld.setTextInputAllowed(false);
 
         timeToTxtFld = new ComboBox<>();
         timeToTxtFld.setItems(timeOptionList);
         timeToTxtFld.setPlaceholder("время конца приёма");
-        timeToTxtFld.setWidth("250px");
+        timeToTxtFld.setWidth(CssStyles.WIDTH_250_PX);
         timeToTxtFld.setEmptySelectionAllowed(false);
         timeToTxtFld.setTextInputAllowed(false);
 
         addRecordBtn = new Button("создать запись", e -> createRecord());
-        addRecordBtn.setWidth("250px");
-        addRecordBtn.setStyleName("ml-button-8");
+        addRecordBtn.setWidth(CssStyles.WIDTH_100_PERCENTS);
+        addRecordBtn.setStyleName(CssStyles.ML_BUTTON_8);
 
-        grid = new Grid<>();
-        grid.setWidth("100%");
-        grid.getDefaultHeaderRow().setStyleName("v-grid-column-header-content");
+        recordsTable = new Grid<>();
+        recordsTable.setWidth(CssStyles.WIDTH_100_PERCENTS);
+        recordsTable.getDefaultHeaderRow().setStyleName("header-align-center");
+        recordsTable.setSelectionMode(Grid.SelectionMode.SINGLE);
 
         refreshMainTable();
 
-        newCustomerOptionsContainer.addComponent(nameTxtFld, 0,1);
-        newCustomerOptionsContainer.addComponent(surnTxtFld, 1,1);
-        newCustomerOptionsContainer.addComponent(middTxtFld, 2, 1);
+        recordsTable.addItemClickListener(e -> {
+            Record selectedRecord = e.getItem();
+            Notification.show(selectedRecord.getPatient().getFirstName() + " items selected");
+        });
 
-        newCustomerOptionsContainer.addComponent(phoneTxtFld, 0,2);
-        newCustomerOptionsContainer.addComponent(emailTxtFld, 1,2);
-        newCustomerOptionsContainer.addComponent(dateTxtFld, 2, 2);
+        newCustomerOptionsContainer = new GridLayout(3,6);
+        newCustomerOptionsContainer.setSpacing(true);
+        newCustomerOptionsContainer.setSizeFull();
+        newCustomerOptionsContainer.addComponent(prevPatientFld, 0,0,2,0);
+        newCustomerOptionsContainer.setComponentAlignment(prevPatientFld, Alignment.TOP_CENTER);
 
-        newCustomerOptionsContainer.addComponent(timeFrTxtFld, 0,3);
-        newCustomerOptionsContainer.addComponent(timeToTxtFld, 1,3);
+        newCustomerOptionsContainer.addComponent(dateTxtFld, 0, 1);
 
-        newCustomerOptionsContainer.addComponent(addRecordBtn, 2,3);
-        newCustomerOptionsContainer.addComponent(grid, 0,5,2,5);
+        newCustomerOptionsContainer.addComponent(timeFrTxtFld, 1,1);
+        newCustomerOptionsContainer.addComponent(timeToTxtFld, 2,1);
 
-        newCustomerOptionsContainer.setComponentAlignment(nameTxtFld, Alignment.TOP_LEFT);
-        newCustomerOptionsContainer.setComponentAlignment(surnTxtFld, Alignment.TOP_CENTER);
-        newCustomerOptionsContainer.setComponentAlignment(middTxtFld, Alignment.TOP_RIGHT);
+        newCustomerOptionsContainer.addComponent(addRecordBtn, 0,3,2,3);
+        newCustomerOptionsContainer.addComponent(recordsTable, 0,5,2,5);
 
-        newCustomerOptionsContainer.setComponentAlignment(phoneTxtFld, Alignment.TOP_LEFT);
-        newCustomerOptionsContainer.setComponentAlignment(emailTxtFld, Alignment.TOP_CENTER);
-        newCustomerOptionsContainer.setComponentAlignment(dateTxtFld, Alignment.TOP_RIGHT);
+        newCustomerOptionsContainer.setComponentAlignment(dateTxtFld, Alignment.TOP_LEFT);
+        newCustomerOptionsContainer.setComponentAlignment(timeFrTxtFld, Alignment.TOP_CENTER);
+        newCustomerOptionsContainer.setComponentAlignment(timeToTxtFld, Alignment.TOP_RIGHT);
 
-        newCustomerOptionsContainer.setComponentAlignment(timeFrTxtFld, Alignment.TOP_LEFT);
-        newCustomerOptionsContainer.setComponentAlignment(timeToTxtFld, Alignment.TOP_CENTER);
-        newCustomerOptionsContainer.setComponentAlignment(addRecordBtn, Alignment.TOP_RIGHT);
+        newCustomerOptionsContainer.setComponentAlignment(addRecordBtn, Alignment.TOP_CENTER);
 
-        VerticalLayout basicLayout = new VerticalLayout(viewOptionsLayout, newCustomerOptionsContainer);
+        VerticalLayout basicLayout = new VerticalLayout(navigationOptionsLayout, newCustomerOptionsContainer);
         basicLayout.setComponentAlignment(newCustomerOptionsContainer, Alignment.TOP_CENTER);
-        basicLayout.setComponentAlignment(viewOptionsLayout, Alignment.TOP_CENTER);
+        basicLayout.setComponentAlignment(navigationOptionsLayout, Alignment.TOP_CENTER);
 
         basicLayout.setSizeFull();
 
@@ -212,64 +182,24 @@ public class SecuredRecordsView extends CustomComponent implements View {
 
     }
 
-    private void onLogout(Button.ClickEvent event) {
-        AuthService.logOut();
-    }
-
     private void prepareFormForNextRequest(Record record) {
-
-        prevCusFld.clear();
-
-        nameTxtFld.clear();
-        surnTxtFld.clear();
-        middTxtFld.clear();
-        phoneTxtFld.clear();
-        emailTxtFld.clear();
-
         refreshMainTable();
-    }
-
-    private void inputNewCustomer() {
-        if (prevCusFld.getValue() != null) {
-            blockUnusedFields(true);
-        } else {
-            blockUnusedFields(false);
-        }
-    }
-
-    private void blockUnusedFields(boolean isBlocked) {
-        nameTxtFld.setReadOnly(isBlocked);
-        surnTxtFld.setReadOnly(isBlocked);
-        middTxtFld.setReadOnly(isBlocked);
-        phoneTxtFld.setReadOnly(isBlocked);
-        emailTxtFld.setReadOnly(isBlocked);
-
-        customerAlreadyExists = isBlocked;
     }
 
     private void createRecord() {
 
-        Customer customer = new Customer();
-
-        if (prevCusFld.getValue() != null) {
-            customer = prevCusFld.getValue();
-        } else {
-            customer.setFirstName(nameTxtFld.getValue());
-            customer.setLastName(surnTxtFld.getValue());
-            customer.setMiddleName(middTxtFld.getValue());
-            customer.setPhone(phoneTxtFld.getValue());
-            customer.setEmail(emailTxtFld.getValue());
-        }
-
+        Patient patient = prevPatientFld.getValue();
         Record record = new Record();
-        record.setCustomer(customer);
+
+        record.setPatient(patient);
         record.setRecDate(dateTxtFld.getValue());
         record.setTime_from(timeFrTxtFld.getValue());
         record.setTime_to(timeToTxtFld.getValue());
 
         recordDAO.save(record);
 
-        Notification notif = new Notification("Запись успешно добавлена!", Notification.Type.HUMANIZED_MESSAGE);
+        Notification notif = new Notification(Notifications.RECORD_CREATED_SUCCESS, Notification.Type.HUMANIZED_MESSAGE);
+
         notif.setDelayMsec(2000);
         notif.setPosition(Position.TOP_RIGHT);
         notif.show(Page.getCurrent());
@@ -279,16 +209,30 @@ public class SecuredRecordsView extends CustomComponent implements View {
 
     private void refreshMainTable() {
 
-        grid.setColumns(new String[]{});
-        grid.setItems(recordDAO.getAll());
+        recordsTable.setColumns(new String[]{});
+        recordsTable.setItems(recordDAO.getAll());
+        recordsTable.addColumn(Record::getId).setCaption("#").setWidth(150).setId("1");
+        recordsTable.addColumn(d-> d.getRecDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).setCaption("Дата").setWidth(150).setId("2");
+        recordsTable.addColumn(Record::getPatient).setCaption("Пациент").setId("3");
+        recordsTable.addColumn(Record::getTime_from).setCaption("Начало приёма").setWidth(150).setId("4");
+        recordsTable.addColumn(Record::getTime_to).setCaption("Конец приёма").setWidth(150).setId("5");
 
-        grid.addColumn(Record::getId).setCaption("#").setStyleGenerator(item -> "v-align-center").setId("1").setWidth(45);
-        grid.addColumn(
-                d-> d.getRecDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
-        ).setCaption("Дата приёма").setStyleGenerator(item -> "v-align-center").setId("2").setWidth(130);
-        grid.addColumn(Record::getCustomer).setCaption("Пациент").setStyleGenerator(item -> "v-align-center").setId("3");
-        grid.addColumn(Record::getTime_from).setCaption("Начало приёма").setStyleGenerator(item -> "v-align-center").setId("4").setWidth(150);
-        grid.addColumn(Record::getTime_to).setCaption("Конец приёма").setStyleGenerator(item -> "v-align-center").setId("5").setWidth(150);
+        for (Grid.Column singleColumn : recordsTable.getColumns()) {
+            singleColumn.setStyleGenerator(item -> "v-align-center");
+        }
+    }
+
+    private void navigateToPatientsOptions(Button.ClickEvent event) {
+        VaadinUI.getNavigation().navigateTo(ViewsNaming.PRIVATE_PATIENTS_VIEW);
+    }
+
+    private void navigateToServicesOptions(Button.ClickEvent event) {
+        VaadinUI.getNavigation().navigateTo(ViewsNaming.PRIVATE_SERVICES_VIEW);
+    }
+
+    private void onLogout(Button.ClickEvent event) {
+        VaadinUI.endAllSessions();
+        AuthService.logOut();
     }
 
     @Override

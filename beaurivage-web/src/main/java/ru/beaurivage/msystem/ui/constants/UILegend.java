@@ -2,12 +2,19 @@ package ru.beaurivage.msystem.ui.constants;
 
 public class UILegend {
 
-    public final static String UNAME_TEXTBOX = "логин";
-    public final static String PWORD_TEXTBOX = "пароль";
+    public static final String UNAME_TEXTBOX = "логин";
+    public static final String PWORD_TEXTBOX = "пароль";
 
-    public final static String REMME_CHKBOX = "запомнить меня";
+    public static final String REMME_CHKBOX = "запомнить меня";
 
-    public final static String LOGIN_BUTTON = "вход";
+    public static final String LOGIN_BUTTON = "вход";
+    public static final String LOGOUT_BUTTON = "выход из системы";
+
+    public static final String RECORDS_PAGE = "секция записей";
+    public static final String PATIENTS_PAGE = "секция пациентов";
+    public static final String SERVICES_PAGE = "секция услуг";
+
+    public static final String NUMBER_COLUMN = "#";
 
     public static final String TXT_FIELD_NAME = " имя";
     public static final String TXT_FIELD_SURN = " фамилия";
@@ -17,4 +24,12 @@ public class UILegend {
     public static final String TXT_FIELD_EMAIL = "email";
 
     public static final String TXT_FIELD_DATE = " дата";
+
+    public static final String TXT_FIELD_TIMEBEFORE = "время начала приёма";
+    public static final String TXT_FIELD_TIMEAFTER = "время конца приёма";
+
+    public static final String TXT_FIELD_SRV_NAME = "название услуги";
+    public static final String TXT_FIELD_SRV_PRICE = "цена услуги";
+
+    public static final String TXT_AREA_SRV_DESC = "описание услуги";
 }

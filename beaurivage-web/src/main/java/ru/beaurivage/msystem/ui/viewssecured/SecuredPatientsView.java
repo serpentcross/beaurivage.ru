@@ -59,13 +59,13 @@ public class SecuredPatientsView extends CustomComponent implements View {
 
         patientDAO = EjbUtil.getLocalBean(PatientDAO.class);
 
-        navRecordsTableBtn = new Button("записи", this::navigateToRecordsOptions);
+        navRecordsTableBtn = new Button(UILegend.RECORDS_PAGE, this::navigateToRecordsOptions);
         navRecordsTableBtn.setWidth(CssStyles.WIDTH_250_PX);
 
-        navServicesTableBtn = new Button("услуги", this::navigateToServicesOptions);
+        navServicesTableBtn = new Button(UILegend.SERVICES_PAGE, this::navigateToServicesOptions);
         navServicesTableBtn.setWidth(CssStyles.WIDTH_250_PX);
 
-        logOutBtn = new Button("выход", this::onLogout);
+        logOutBtn = new Button(UILegend.LOGOUT_BUTTON, this::onLogout);
         logOutBtn.setWidth(CssStyles.WIDTH_250_PX);
         logOutBtn.setStyleName("ml-button-13");
 
@@ -196,13 +196,13 @@ public class SecuredPatientsView extends CustomComponent implements View {
         patientsTable.setColumns(new String[]{});
         patientsTable.setItems(patientDAO.getAll());
 
-        patientsTable.addColumn(Patient::getId).setCaption("#").setWidth(150).setId("1");
-        patientsTable.addColumn(Patient::getFirstName).setCaption("Имя").setWidth(150).setId("2");
-        patientsTable.addColumn(Patient::getLastName).setCaption("Фамилия").setWidth(150).setId("3");
-        patientsTable.addColumn(Patient::getMiddleName).setCaption("Отчество").setWidth(150).setId("4");
-        patientsTable.addColumn(Patient::getPhone).setCaption("Телефон").setWidth(150).setId("5");
+        patientsTable.addColumn(Patient::getId).setCaption(UILegend.NUMBER_COLUMN).setWidth(150).setId("1");
+        patientsTable.addColumn(Patient::getFirstName).setCaption(UILegend.TXT_FIELD_NAME).setWidth(150).setId("2");
+        patientsTable.addColumn(Patient::getLastName).setCaption(UILegend.TXT_FIELD_SURN).setWidth(150).setId("3");
+        patientsTable.addColumn(Patient::getMiddleName).setCaption(UILegend.TXT_FIELD_MIDD).setWidth(150).setId("4");
+        patientsTable.addColumn(Patient::getPhone).setCaption(UILegend.TXT_FIELD_PHONE).setWidth(150).setId("5");
         patientsTable.addColumn(d-> d.getBirthDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).setCaption("Дата рождения").setWidth(150).setId("6");
-        patientsTable.addColumn(Patient::getEmail).setCaption("Email").setId("7");
+        patientsTable.addColumn(Patient::getEmail).setCaption(UILegend.TXT_FIELD_EMAIL).setId("7");
 
         for (Grid.Column singleColumn : patientsTable.getColumns()) {
             singleColumn.setStyleGenerator(item -> "v-align-center");

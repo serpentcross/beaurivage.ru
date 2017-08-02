@@ -27,6 +27,7 @@ import ru.beaurivage.msystem.logic.util.EjbUtil;
 import ru.beaurivage.msystem.ui.VaadinUI;
 import ru.beaurivage.msystem.ui.constants.CssStyles;
 import ru.beaurivage.msystem.ui.constants.Notifications;
+import ru.beaurivage.msystem.ui.constants.UILegend;
 import ru.beaurivage.msystem.ui.constants.ViewsNaming;
 
 import java.time.LocalDate;
@@ -94,13 +95,13 @@ public class SecuredRecordsView extends CustomComponent implements View {
         horizontalBar = new Label();
         horizontalBar.setStyleName("horizontalRule");
 
-        navPatientsTableBtn = new Button("пациенты", this::navigateToPatientsOptions);
+        navPatientsTableBtn = new Button(UILegend.PATIENTS_PAGE, this::navigateToPatientsOptions);
         navPatientsTableBtn.setWidth(CssStyles.WIDTH_250_PX);
 
-        navServicesTableBtn = new Button("услуги", this::navigateToServicesOptions);
+        navServicesTableBtn = new Button(UILegend.SERVICES_PAGE, this::navigateToServicesOptions);
         navServicesTableBtn.setWidth(CssStyles.WIDTH_250_PX);
 
-        logOutBtn = new Button("выход", this::onLogout);
+        logOutBtn = new Button(UILegend.LOGOUT_BUTTON, this::onLogout);
         logOutBtn.setWidth(CssStyles.WIDTH_250_PX);
         logOutBtn.setStyleName("ml-button-13");
 
@@ -124,14 +125,14 @@ public class SecuredRecordsView extends CustomComponent implements View {
 
         timeFrTxtFld = new ComboBox<>();
         timeFrTxtFld.setItems(timeOptionList);
-        timeFrTxtFld.setPlaceholder("время начала приёма");
+        timeFrTxtFld.setPlaceholder(UILegend.TXT_FIELD_TIMEBEFORE);
         timeFrTxtFld.setWidth(CssStyles.WIDTH_250_PX);
         timeFrTxtFld.setEmptySelectionAllowed(false);
         timeFrTxtFld.setTextInputAllowed(false);
 
         timeToTxtFld = new ComboBox<>();
         timeToTxtFld.setItems(timeOptionList);
-        timeToTxtFld.setPlaceholder("время конца приёма");
+        timeToTxtFld.setPlaceholder(UILegend.TXT_FIELD_TIMEAFTER);
         timeToTxtFld.setWidth(CssStyles.WIDTH_250_PX);
         timeToTxtFld.setEmptySelectionAllowed(false);
         timeToTxtFld.setTextInputAllowed(false);
@@ -182,7 +183,7 @@ public class SecuredRecordsView extends CustomComponent implements View {
 
     }
 
-    private void prepareFormForNextRequest(Record record) {
+    private void prepareFormForNextRequest() {
         refreshMainTable();
     }
 
@@ -204,7 +205,7 @@ public class SecuredRecordsView extends CustomComponent implements View {
         notif.setPosition(Position.TOP_RIGHT);
         notif.show(Page.getCurrent());
 
-        prepareFormForNextRequest(record);
+        prepareFormForNextRequest();
     }
 
     private void refreshMainTable() {

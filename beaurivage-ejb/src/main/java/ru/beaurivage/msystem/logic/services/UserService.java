@@ -1,5 +1,9 @@
 package ru.beaurivage.msystem.logic.services;
 
+import ru.beaurivage.msystem.logic.dao.PatientDAO;
+import ru.beaurivage.msystem.logic.dao.UserDAO;
+import ru.beaurivage.msystem.logic.util.EjbUtil;
+
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.HashMap;
@@ -7,12 +11,16 @@ import java.util.Map;
 
 public class UserService {
 
+    private static UserDAO userDAO;
+
     private static SecureRandom random = new SecureRandom();
 
     private static Map<String, String> rememberedUsers = new HashMap<String, String>();
 
     public static boolean isAuthenticUser(String username, String password) {
-        return username.equals("admin") && password.equals("password");
+        userDAO = EjbUtil.getLocalBean(UserDAO.class);
+        return userDAO.getAuthState(username, password);
+        //return username.equals("admin") && password.equals("password");
     }
 
     public static String rememberUser(String username) {

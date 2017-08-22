@@ -3,6 +3,7 @@ package ru.beaurivage.msystem.logic.entities;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,4 +23,16 @@ public class Service implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter @Setter
     private Long id;
+
+    @Column(name = "name")
+    @Getter @Setter
+    private String name;
+
+    @Column(name = "price")
+    @Getter @Setter
+    private int price;
+
+    @Column(name = "description")
+    @Getter @Setter
+    private String description;
 }

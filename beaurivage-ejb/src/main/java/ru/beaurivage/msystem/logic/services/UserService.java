@@ -20,7 +20,6 @@ public class UserService {
     public static boolean isAuthenticUser(String username, String password) {
         userDAO = EjbUtil.getLocalBean(UserDAO.class);
         return userDAO.getAuthState(username, password);
-        //return username.equals("admin") && password.equals("password");
     }
 
     public static String rememberUser(String username) {

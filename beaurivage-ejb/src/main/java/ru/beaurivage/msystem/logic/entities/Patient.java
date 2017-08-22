@@ -59,20 +59,14 @@ public class Patient implements Serializable {
 
         if (!id.equals(patient.id)) return false;
         if (!firstName.equals(patient.firstName)) return false;
-        if (middleName != null ? !middleName.equals(patient.middleName) : patient.middleName != null) return false;
-        if (!lastName.equals(patient.lastName)) return false;
-        if (!phone.equals(patient.phone)) return false;
-        return email != null ? email.equals(patient.email) : patient.email == null;
+        return birthDate != null ? birthDate.equals(patient.birthDate) : patient.birthDate == null;
     }
 
     @Override
     public int hashCode() {
         int result = id.hashCode();
         result = 31 * result + firstName.hashCode();
-        result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
-        result = 31 * result + lastName.hashCode();
-        result = 31 * result + phone.hashCode();
-        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
         return result;
     }
 

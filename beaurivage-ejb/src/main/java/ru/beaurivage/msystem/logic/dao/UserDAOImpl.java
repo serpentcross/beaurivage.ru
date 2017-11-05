@@ -3,14 +3,16 @@ package ru.beaurivage.msystem.logic.dao;
 import ru.beaurivage.msystem.logic.entities.User;
 
 import javax.ejb.Stateless;
+
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+
 import java.security.MessageDigest;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,9 +44,9 @@ public class UserDAOImpl implements UserDAO {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA1");
             byte[] result = messageDigest.digest(notEncryptedPassword.getBytes());
-            StringBuffer sb = new StringBuffer();
-            for(int i = 0; i < result.length; i++) {
-                sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
+            StringBuilder sb = new StringBuilder();
+            for (byte arrayMember : result) {
+                sb.append(Integer.toString((arrayMember & 0xff) + 0x100, 16).substring(1));
             }
             return sb.toString();
         } catch (Exception e) {

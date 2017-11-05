@@ -2,14 +2,17 @@ package ru.beaurivage.msystem.ui.viewspublic;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
+
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.VerticalLayout;
+
 import ru.beaurivage.msystem.ui.VaadinUI;
 import ru.beaurivage.msystem.ui.constants.CssStyles;
 import ru.beaurivage.msystem.ui.constants.ViewsNaming;

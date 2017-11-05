@@ -5,13 +5,14 @@ import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinSession;
 
 import javax.servlet.http.Cookie;
+
 import java.util.Arrays;
 import java.util.Optional;
 
 public class AuthService {
 
     private static final String COOKIE_NAME = "remember-me";
-    public static final String SESSION_USERNAME = "username";
+    private static final String SESSION_USERNAME = "username";
 
     public static boolean isAuthenticated() {
         return VaadinSession.getCurrent().getAttribute(SESSION_USERNAME) != null || loginRememberedUser();
@@ -65,7 +66,6 @@ public class AuthService {
 
     private static void rememberUser(String username) {
         String id = UserService.rememberUser(username);
-
         Cookie cookie = new Cookie(COOKIE_NAME, id);
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60 * 24 * 30);

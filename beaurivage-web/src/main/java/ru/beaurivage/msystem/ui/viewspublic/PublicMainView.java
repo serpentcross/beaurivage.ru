@@ -1,11 +1,13 @@
 package ru.beaurivage.msystem.ui.viewspublic;
 
-import com.vaadin.cdi.CDIView;
 import com.vaadin.event.ShortcutAction;
+
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+
 import com.vaadin.server.FileResource;
 import com.vaadin.server.VaadinService;
+
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
@@ -18,7 +20,9 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+
 import ru.beaurivage.msystem.logic.services.AuthService;
+
 import ru.beaurivage.msystem.ui.VaadinUI;
 import ru.beaurivage.msystem.ui.constants.CssStyles;
 import ru.beaurivage.msystem.ui.constants.Notifications;

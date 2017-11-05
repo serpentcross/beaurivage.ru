@@ -1,7 +1,6 @@
 package ru.beaurivage.msystem.logic.dao;
 
 import ru.beaurivage.msystem.logic.entities.Patient;
-import ru.beaurivage.msystem.logic.entities.Patient;
 
 import javax.ejb.Local;
 import java.util.List;

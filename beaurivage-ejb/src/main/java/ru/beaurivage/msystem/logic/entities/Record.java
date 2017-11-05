@@ -3,6 +3,8 @@ package ru.beaurivage.msystem.logic.entities;
 import lombok.Getter;
 import lombok.Setter;
 
+import ru.beaurivage.msystem.logic.enums.CabinetType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -40,6 +42,10 @@ public class Record implements Serializable {
     @Column(name = "recdate")
     @Getter @Setter
     private LocalDate recDate;
+
+    @Column(name = "cabinet")
+    @Getter @Setter
+    private CabinetType cabinetType;
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name= "patient")

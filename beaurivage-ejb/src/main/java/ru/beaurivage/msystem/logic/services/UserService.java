@@ -1,6 +1,5 @@
 package ru.beaurivage.msystem.logic.services;
 
-import ru.beaurivage.msystem.logic.dao.PatientDAO;
 import ru.beaurivage.msystem.logic.dao.UserDAO;
 import ru.beaurivage.msystem.logic.util.EjbUtil;
 

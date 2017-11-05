@@ -14,6 +14,8 @@ public interface RecordDAO {
 
     void update(Record record);
 
+    void delete(Record record);
+
     List<Record> getAll();
 
 }

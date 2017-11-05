@@ -1,10 +1,12 @@
 package ru.beaurivage.msystem.ui.viewssecured;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
 import com.vaadin.shared.Position;
+
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
@@ -14,19 +16,22 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.renderers.ButtonRenderer;
 
 import ru.beaurivage.msystem.logic.dao.PatientDAO;
 import ru.beaurivage.msystem.logic.entities.Patient;
 import ru.beaurivage.msystem.logic.services.AuthService;
 import ru.beaurivage.msystem.logic.util.EjbUtil;
+
 import ru.beaurivage.msystem.ui.VaadinUI;
 import ru.beaurivage.msystem.ui.constants.CssStyles;
 import ru.beaurivage.msystem.ui.constants.Notifications;
 import ru.beaurivage.msystem.ui.constants.UILegend;
 import ru.beaurivage.msystem.ui.constants.ViewsNaming;
+import ru.beaurivage.msystem.ui.modals.EditInfoWindow;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Theme("beaurivage")
@@ -52,6 +57,8 @@ public class SecuredPatientsView extends CustomComponent implements View {
 
     private Button addPatientBtn;
     private Grid<Patient> patientsTable;
+
+    private EditInfoWindow editInfoWindow;
 
     public SecuredPatientsView() {
 
@@ -105,10 +112,9 @@ public class SecuredPatientsView extends CustomComponent implements View {
         emailTxtFld.setWidth(CssStyles.WIDTH_250_PX);
 
         brdtTxtFld = new DateField();
-        brdtTxtFld.setPlaceholder("dd-MM-yyyy");
-        brdtTxtFld.setWidth(CssStyles.WIDTH_250_PX);
-        brdtTxtFld.setValue(LocalDate.now());
         brdtTxtFld.setDateFormat("dd-MM-yyyy");
+        brdtTxtFld.setPlaceholder("дата рождения");
+        brdtTxtFld.setWidth(CssStyles.WIDTH_250_PX);
         
         addPatientBtn = new Button("внести нового пациента", this::createPatient);
         addPatientBtn.setWidth(CssStyles.WIDTH_100_PERCENTS);
@@ -196,6 +202,15 @@ public class SecuredPatientsView extends CustomComponent implements View {
         patientsTable.setColumns(new String[]{});
         patientsTable.setItems(patientDAO.getAll());
 
+        ButtonRenderer editButtonRenderer = new ButtonRenderer(clickEvent -> {
+            Patient selectedPatient = (Patient) clickEvent.getItem();
+            editInfoWindow = new EditInfoWindow(selectedPatient);
+            UI.getCurrent().addWindow(editInfoWindow);
+            editInfoWindow.addCloseListener(e -> refreshPatientsTable());
+        });
+
+        editButtonRenderer.setHtmlContentAllowed(true);
+
         patientsTable.addColumn(Patient::getId).setCaption(UILegend.NUMBER_COLUMN).setWidth(150).setId("1");
         patientsTable.addColumn(Patient::getFirstName).setCaption(UILegend.TXT_FIELD_NAME).setWidth(150).setId("2");
         patientsTable.addColumn(Patient::getLastName).setCaption(UILegend.TXT_FIELD_SURN).setWidth(150).setId("3");
@@ -203,6 +218,7 @@ public class SecuredPatientsView extends CustomComponent implements View {
         patientsTable.addColumn(Patient::getPhone).setCaption(UILegend.TXT_FIELD_PHONE).setWidth(150).setId("5");
         patientsTable.addColumn(d-> d.getBirthDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).setCaption("Дата рождения").setWidth(150).setId("6");
         patientsTable.addColumn(Patient::getEmail).setCaption(UILegend.TXT_FIELD_EMAIL).setId("7");
+        patientsTable.addColumn(rec -> VaadinIcons.EDIT.getHtml() , editButtonRenderer).setWidth(65);
 
         for (Grid.Column singleColumn : patientsTable.getColumns()) {
             singleColumn.setStyleGenerator(item -> "v-align-center");

@@ -4,6 +4,7 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
+
 import ru.beaurivage.msystem.logic.services.AuthService;
 import ru.beaurivage.msystem.ui.constants.ViewsNaming;
 import ru.beaurivage.msystem.ui.viewspublic.PublicErrorView;

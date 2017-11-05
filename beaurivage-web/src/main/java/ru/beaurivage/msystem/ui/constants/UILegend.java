@@ -10,9 +10,9 @@ public class UILegend {
     public static final String LOGIN_BUTTON = "вход";
     public static final String LOGOUT_BUTTON = "выход из системы";
 
-    public static final String RECORDS_PAGE = "секция записей";
-    public static final String PATIENTS_PAGE = "секция пациентов";
-    public static final String SERVICES_PAGE = "секция услуг";
+    public static final String RECORDS_PAGE = "записи";
+    public static final String PATIENTS_PAGE = "пациенты";
+    public static final String SERVICES_PAGE = "услуги";
 
     public static final String NUMBER_COLUMN = "#";
 

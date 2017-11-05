@@ -4,12 +4,14 @@ import ru.beaurivage.msystem.logic.entities.Record;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
 import java.util.List;
 
 @Stateless
@@ -41,6 +43,11 @@ public class RecordDAOImpl implements RecordDAO {
     @Override
     public void update(Record record) {
         em.merge(record);
+    }
+
+    @Override
+    public void delete(Record record) {
+        em.remove(em.contains(record) ? record : em.merge(record));
     }
 
     @Override

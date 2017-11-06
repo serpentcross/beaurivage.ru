@@ -61,6 +61,7 @@ public class SecuredPatientsView extends CustomComponent implements View {
     private DateField brdtTxtFld;
 
     private Button addPatientBtn;
+
     private Grid<Patient> patientsTable;
 
     private EditInfoWindow editInfoWindow;
@@ -128,7 +129,7 @@ public class SecuredPatientsView extends CustomComponent implements View {
         patientBinder.forField(nameTxtFld).withValidator(name -> name.length() >= 3, "Имя должно содержать хотя бы 3 буквы!").bind(Patient::getFirstName, Patient::setFirstName);
         patientBinder.forField(surnTxtFld).withValidator(surname -> surname.length() >= 3, "Фамилия должна содержать хотя бы 3 буквы!").bind(Patient::getLastName, Patient::setLastName);
         patientBinder.forField(phoneTxtFld).withValidator(phone -> phone.matches("^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$"), "Введите корректный номер телефона начиная с +7 или 8! ").bind(Patient::getEmail, Patient::setEmail);
-        patientBinder.forField(emailTxtFld).withValidator(new EmailValidator("Это не e-mail! Введите корректный e-mail!")).bind(Patient::getEmail, Patient::setEmail);
+        //patientBinder.forField(emailTxtFld).withValidator(new EmailValidator("Это не e-mail! Введите корректный e-mail!")).bind(Patient::getEmail, Patient::setEmail);
         patientBinder.forField(brdtTxtFld).asRequired("Дата рождения не может быть пустой!").bind(Patient::getBirthDate, Patient::setBirthDate);
 
         addPatientBtn = new Button("внести нового пациента", event -> {
@@ -190,11 +191,12 @@ public class SecuredPatientsView extends CustomComponent implements View {
 
     private void prepareFormForNextRequest(Patient patient) {
 
-        nameTxtFld.clear();
         surnTxtFld.clear();
+        nameTxtFld.clear();
         middTxtFld.clear();
         phoneTxtFld.clear();
         emailTxtFld.clear();
+        brdtTxtFld.clear();
 
         refreshPatientsTable();
     }
@@ -203,8 +205,8 @@ public class SecuredPatientsView extends CustomComponent implements View {
 
         Patient patient = new Patient();
 
-        patient.setFirstName(nameTxtFld.getValue());
         patient.setLastName(surnTxtFld.getValue());
+        patient.setFirstName(nameTxtFld.getValue());
         patient.setMiddleName(middTxtFld.getValue());
         patient.setPhone(phoneTxtFld.getValue());
         patient.setBirthDate(brdtTxtFld.getValue());
@@ -236,8 +238,8 @@ public class SecuredPatientsView extends CustomComponent implements View {
         editButtonRenderer.setHtmlContentAllowed(true);
 
         patientsTable.addColumn(Patient::getId).setCaption(UILegend.NUMBER_COLUMN).setWidth(150).setId("1");
-        patientsTable.addColumn(Patient::getFirstName).setCaption(UILegend.TXT_FIELD_NAME).setWidth(150).setId("2");
-        patientsTable.addColumn(Patient::getLastName).setCaption(UILegend.TXT_FIELD_SURN).setWidth(150).setId("3");
+        patientsTable.addColumn(Patient::getLastName).setCaption(UILegend.TXT_FIELD_SURN).setWidth(150).setId("2");
+        patientsTable.addColumn(Patient::getFirstName).setCaption(UILegend.TXT_FIELD_NAME).setWidth(150).setId("3");
         patientsTable.addColumn(Patient::getMiddleName).setCaption(UILegend.TXT_FIELD_MIDD).setWidth(150).setId("4");
         patientsTable.addColumn(Patient::getPhone).setCaption(UILegend.TXT_FIELD_PHONE).setWidth(150).setId("5");
         patientsTable.addColumn(d-> d.getBirthDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).setCaption("Дата рождения").setWidth(150).setId("6");

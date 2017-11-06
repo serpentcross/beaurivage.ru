@@ -43,8 +43,8 @@ public final class EditInfoWindow extends Window {
     private ComboBox<String> timeFrTxtFld;
     private ComboBox<String> timeToTxtFld;
 
-    private TextField nameTxtFld;
     private TextField surnTxtFld;
+    private TextField nameTxtFld;
     private TextField middTxtFld;
     private TextField phoneTxtFld;
     private TextField emailTxtFld;
@@ -178,15 +178,15 @@ public final class EditInfoWindow extends Window {
         GridLayout patientLayoutOptions = new GridLayout(3, 2);
         patientLayoutOptions.setSpacing(true);
 
-        nameTxtFld = new TextField();
-        nameTxtFld.setPlaceholder(UILegend.TXT_FIELD_NAME);
-        nameTxtFld.setWidth("200px");
-        nameTxtFld.setValue(patient.getFirstName());
-
         surnTxtFld = new TextField();
         surnTxtFld.setPlaceholder(UILegend.TXT_FIELD_SURN);
         surnTxtFld.setWidth("200px");
         surnTxtFld.setValue(patient.getLastName());
+
+        nameTxtFld = new TextField();
+        nameTxtFld.setPlaceholder(UILegend.TXT_FIELD_NAME);
+        nameTxtFld.setWidth("200px");
+        nameTxtFld.setValue(patient.getFirstName());
 
         middTxtFld = new TextField();
         middTxtFld.setPlaceholder(UILegend.TXT_FIELD_MIDD);
@@ -213,7 +213,7 @@ public final class EditInfoWindow extends Window {
         patientBinder.forField(nameTxtFld).withValidator(name -> name.length() >= 3, "Имя должно содержать хотя бы 3 буквы!").bind(Patient::getFirstName, Patient::setFirstName);
         patientBinder.forField(surnTxtFld).withValidator(surname -> surname.length() >= 3, "Фамилия должна содержать хотя бы 3 буквы!").bind(Patient::getLastName, Patient::setLastName);
         patientBinder.forField(phoneTxtFld).withValidator(phone -> phone.matches("^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$"), "Введите корректный номер телефона начиная с +7 или 8! ").bind(Patient::getEmail, Patient::setEmail);
-        patientBinder.forField(emailTxtFld).withValidator(new EmailValidator("Это не e-mail! Введите корректный e-mail!")).bind(Patient::getEmail, Patient::setEmail);
+       // patientBinder.forField(emailTxtFld).withValidator(new EmailValidator("Это не e-mail! Введите корректный e-mail!")).bind(Patient::getEmail, Patient::setEmail);
         patientBinder.forField(brdtTxtFld).asRequired("Дата рождения не может быть пустой!").bind(Patient::getBirthDate, Patient::setBirthDate);
 
         saveButton.addClickListener(e -> {
@@ -229,16 +229,16 @@ public final class EditInfoWindow extends Window {
         );
         saveButton.setWidth("300px");
 
-        patientLayoutOptions.addComponent(nameTxtFld, 0,0);
-        patientLayoutOptions.addComponent(surnTxtFld, 1, 0);
+        patientLayoutOptions.addComponent(surnTxtFld, 0, 0);
+        patientLayoutOptions.addComponent(nameTxtFld, 1,0);
         patientLayoutOptions.addComponent(middTxtFld, 2 , 0);
 
         patientLayoutOptions.addComponent(phoneTxtFld, 0,1);
         patientLayoutOptions.addComponent(emailTxtFld, 1, 1);
         patientLayoutOptions.addComponent(brdtTxtFld, 2 , 1);
 
-        patientLayoutOptions.setComponentAlignment(nameTxtFld, Alignment.MIDDLE_LEFT);
-        patientLayoutOptions.setComponentAlignment(surnTxtFld, Alignment.MIDDLE_CENTER);
+        patientLayoutOptions.setComponentAlignment(surnTxtFld, Alignment.MIDDLE_LEFT);
+        patientLayoutOptions.setComponentAlignment(nameTxtFld, Alignment.MIDDLE_CENTER);
         patientLayoutOptions.setComponentAlignment(nameTxtFld, Alignment.MIDDLE_RIGHT);
 
         patientLayoutOptions.setComponentAlignment(phoneTxtFld, Alignment.MIDDLE_LEFT);
@@ -271,8 +271,8 @@ public final class EditInfoWindow extends Window {
     }
 
     private void editPatient(Patient patient) {
-        patient.setFirstName(nameTxtFld.getValue());
         patient.setLastName(surnTxtFld.getValue());
+        patient.setFirstName(nameTxtFld.getValue());
         patient.setMiddleName(middTxtFld.getValue());
         patient.setPhone(phoneTxtFld.getValue());
         patient.setEmail(emailTxtFld.getValue());

@@ -2,6 +2,7 @@ package ru.beaurivage.msystem.ui.viewssecured;
 
 import com.vaadin.annotations.Theme;
 
+import com.vaadin.data.Binder;
 import com.vaadin.icons.VaadinIcons;
 
 import com.vaadin.navigator.View;
@@ -9,6 +10,7 @@ import com.vaadin.navigator.ViewChangeListener;
 
 import com.vaadin.server.Page;
 
+import com.vaadin.shared.Position;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -75,6 +77,8 @@ public class SecuredRecordsView extends CustomComponent implements View {
 
     private EditInfoWindow editInfoWindow;
     private ConfirmWindow confirmWindow;
+
+    private Binder<Record> recordBinder = new Binder<>();
 
     private ArrayList<String> timeOptionList = new ArrayList<String>() {{
         add("10:00");
@@ -160,7 +164,23 @@ public class SecuredRecordsView extends CustomComponent implements View {
         timeToTxtFld.setEmptySelectionAllowed(false);
         timeToTxtFld.setTextInputAllowed(false);
 
-        addRecordBtn = new Button("создать запись", e -> createRecord());
+        recordBinder.forField(prevPatientFld).asRequired("Выберите пациента!").bind(Record::getPatient, Record::setPatient);
+        recordBinder.forField(cabinetSelection).asRequired("Выберите тип кабинета!").bind(Record::getCabinetType, Record::setCabinetType);
+        recordBinder.forField(dateTxtFld).asRequired("Укажите дату приёма!").bind(Record::getRecDate, Record::setRecDate);
+        recordBinder.forField(timeFrTxtFld).asRequired("Укажите время начала приёма!").bind(Record::getTime_from, Record::setTime_from);
+        recordBinder.forField(timeToTxtFld).asRequired("Укажите время окончания приёма!").bind(Record::getTime_to, Record::setTime_to);
+
+        addRecordBtn = new Button("создать запись", event -> {
+                if (recordBinder.validate().isOk()) {
+                    this.createRecord();
+                } else {
+                    Notification notif = new Notification("Ошибка валидации! Заполните все необходимые поля!", Notification.Type.ERROR_MESSAGE);
+                    notif.setDelayMsec(2000);
+                    notif.setPosition(Position.TOP_RIGHT);
+                    notif.show(Page.getCurrent());
+                }
+            }
+        );
         addRecordBtn.setWidth(CssStyles.WIDTH_100_PERCENTS);
         addRecordBtn.setStyleName(CssStyles.ML_BUTTON_8);
 
@@ -180,7 +200,6 @@ public class SecuredRecordsView extends CustomComponent implements View {
         newPatientOptionsContainer.setComponentAlignment(prevPatientFld, Alignment.TOP_LEFT);
         newPatientOptionsContainer.addComponent(cabinetSelection, 2,0);
         newPatientOptionsContainer.setComponentAlignment(cabinetSelection, Alignment.TOP_RIGHT);
-
 
         newPatientOptionsContainer.addComponent(dateTxtFld, 0, 1);
 

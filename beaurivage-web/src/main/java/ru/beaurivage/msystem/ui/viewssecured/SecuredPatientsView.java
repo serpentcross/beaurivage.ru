@@ -1,6 +1,9 @@
 package ru.beaurivage.msystem.ui.viewssecured;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.data.Binder;
+import com.vaadin.data.Validator;
+import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -32,7 +35,9 @@ import ru.beaurivage.msystem.ui.constants.UILegend;
 import ru.beaurivage.msystem.ui.constants.ViewsNaming;
 import ru.beaurivage.msystem.ui.modals.EditInfoWindow;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Theme("beaurivage")
 public class SecuredPatientsView extends CustomComponent implements View {
@@ -48,8 +53,8 @@ public class SecuredPatientsView extends CustomComponent implements View {
 
     private Label horizontalBar;
 
-    private TextField nameTxtFld;
     private TextField surnTxtFld;
+    private TextField nameTxtFld;
     private TextField middTxtFld;
     private TextField phoneTxtFld;
     private TextField emailTxtFld;
@@ -59,6 +64,8 @@ public class SecuredPatientsView extends CustomComponent implements View {
     private Grid<Patient> patientsTable;
 
     private EditInfoWindow editInfoWindow;
+
+    private Binder<Patient> patientBinder = new Binder<>();
 
     public SecuredPatientsView() {
 
@@ -91,13 +98,13 @@ public class SecuredPatientsView extends CustomComponent implements View {
         navigationOptionsLayout.setComponentAlignment(logOutBtn, Alignment.TOP_RIGHT);
         navigationOptionsLayout.addComponent(horizontalBar, 0,1,2,1);
 
-        nameTxtFld = new TextField();
-        nameTxtFld.setPlaceholder(UILegend.TXT_FIELD_NAME);
-        nameTxtFld.setWidth(CssStyles.WIDTH_250_PX);
-
         surnTxtFld = new TextField();
         surnTxtFld.setPlaceholder(UILegend.TXT_FIELD_SURN);
         surnTxtFld.setWidth(CssStyles.WIDTH_250_PX);
+
+        nameTxtFld = new TextField();
+        nameTxtFld.setPlaceholder(UILegend.TXT_FIELD_NAME);
+        nameTxtFld.setWidth(CssStyles.WIDTH_250_PX);
 
         middTxtFld = new TextField();
         middTxtFld.setPlaceholder(UILegend.TXT_FIELD_MIDD);
@@ -106,6 +113,7 @@ public class SecuredPatientsView extends CustomComponent implements View {
         phoneTxtFld = new TextField();
         phoneTxtFld.setPlaceholder(UILegend.TXT_FIELD_PHONE);
         phoneTxtFld.setWidth(CssStyles.WIDTH_250_PX);
+        phoneTxtFld.setMaxLength(12);
 
         emailTxtFld = new TextField();
         emailTxtFld.setPlaceholder(UILegend.TXT_FIELD_EMAIL);
@@ -115,8 +123,25 @@ public class SecuredPatientsView extends CustomComponent implements View {
         brdtTxtFld.setDateFormat("dd-MM-yyyy");
         brdtTxtFld.setPlaceholder("дата рождения");
         brdtTxtFld.setWidth(CssStyles.WIDTH_250_PX);
-        
-        addPatientBtn = new Button("внести нового пациента", this::createPatient);
+        brdtTxtFld.setValue(LocalDate.of(1990,1,1));
+
+        patientBinder.forField(nameTxtFld).withValidator(name -> name.length() >= 3, "Имя должно содержать хотя бы 3 буквы!").bind(Patient::getFirstName, Patient::setFirstName);
+        patientBinder.forField(surnTxtFld).withValidator(surname -> surname.length() >= 3, "Фамилия должна содержать хотя бы 3 буквы!").bind(Patient::getLastName, Patient::setLastName);
+        patientBinder.forField(phoneTxtFld).withValidator(phone -> phone.matches("^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$"), "Введите корректный номер телефона начиная с +7 или 8! ").bind(Patient::getEmail, Patient::setEmail);
+        patientBinder.forField(emailTxtFld).withValidator(new EmailValidator("Это не e-mail! Введите корректный e-mail!")).bind(Patient::getEmail, Patient::setEmail);
+        patientBinder.forField(brdtTxtFld).asRequired("Дата рождения не может быть пустой!").bind(Patient::getBirthDate, Patient::setBirthDate);
+
+        addPatientBtn = new Button("внести нового пациента", event -> {
+                if (patientBinder.validate().isOk()) {
+                    this.createPatient();
+                } else {
+                    Notification notif = new Notification("Ошибка валидации! Заполните все необходимые поля!", Notification.Type.ERROR_MESSAGE);
+                    notif.setDelayMsec(2000);
+                    notif.setPosition(Position.TOP_RIGHT);
+                    notif.show(Page.getCurrent());
+                }
+            }
+        );
         addPatientBtn.setWidth(CssStyles.WIDTH_100_PERCENTS);
         addPatientBtn.setStyleName(CssStyles.ML_BUTTON_8);
 
@@ -132,8 +157,8 @@ public class SecuredPatientsView extends CustomComponent implements View {
         newPatientOptionsContainer.setSpacing(true);
         newPatientOptionsContainer.setSizeFull();
 
-        newPatientOptionsContainer.addComponent(nameTxtFld, 0,0);
-        newPatientOptionsContainer.addComponent(surnTxtFld, 1,0);
+        newPatientOptionsContainer.addComponent(surnTxtFld, 0,0);
+        newPatientOptionsContainer.addComponent(nameTxtFld, 1,0);
         newPatientOptionsContainer.addComponent(middTxtFld, 2, 0);
 
         newPatientOptionsContainer.addComponent(phoneTxtFld, 0,1);
@@ -144,8 +169,8 @@ public class SecuredPatientsView extends CustomComponent implements View {
         
         newPatientOptionsContainer.addComponent(patientsTable, 0,3,2,3);
 
-        newPatientOptionsContainer.setComponentAlignment(nameTxtFld, Alignment.TOP_LEFT);
-        newPatientOptionsContainer.setComponentAlignment(surnTxtFld, Alignment.TOP_CENTER);
+        newPatientOptionsContainer.setComponentAlignment(surnTxtFld, Alignment.TOP_LEFT);
+        newPatientOptionsContainer.setComponentAlignment(nameTxtFld, Alignment.TOP_CENTER);
         newPatientOptionsContainer.setComponentAlignment(middTxtFld, Alignment.TOP_RIGHT);
 
         newPatientOptionsContainer.setComponentAlignment(phoneTxtFld, Alignment.TOP_LEFT);
@@ -157,7 +182,6 @@ public class SecuredPatientsView extends CustomComponent implements View {
         VerticalLayout basicLayout = new VerticalLayout(navigationOptionsLayout, newPatientOptionsContainer);
         basicLayout.setComponentAlignment(navigationOptionsLayout, Alignment.TOP_CENTER);
         basicLayout.setComponentAlignment(newPatientOptionsContainer, Alignment.TOP_CENTER);
-
 
         basicLayout.setSizeFull();
 
@@ -175,7 +199,7 @@ public class SecuredPatientsView extends CustomComponent implements View {
         refreshPatientsTable();
     }
 
-    private void createPatient(Button.ClickEvent event) {
+    private void createPatient() {
 
         Patient patient = new Patient();
 

@@ -1,21 +1,25 @@
 package ru.beaurivage.msystem.ui.modals;
 
+import com.vaadin.data.Binder;
+import com.vaadin.data.validator.EmailValidator;
+import com.vaadin.server.Page;
+import com.vaadin.shared.Position;
+
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import ru.beaurivage.msystem.logic.dao.PatientDAO;
 import ru.beaurivage.msystem.logic.dao.RecordDAO;
-
 import ru.beaurivage.msystem.logic.entities.Patient;
 import ru.beaurivage.msystem.logic.entities.Record;
-
 import ru.beaurivage.msystem.logic.enums.CabinetType;
 import ru.beaurivage.msystem.logic.util.EjbUtil;
 
@@ -50,6 +54,9 @@ public final class EditInfoWindow extends Window {
 
     private GridLayout editWindowButtonLayout;
     private FormLayout content;
+
+    private Binder<Patient> patientBinder = new Binder<>();
+    private Binder<Record> recordBinder = new Binder<>();
 
     public EditInfoWindow(Record record, ArrayList<String> timeOptionList) {
 
@@ -95,7 +102,23 @@ public final class EditInfoWindow extends Window {
         editWindowFieldsLayout.setSizeFull();
         editWindowFieldsLayout.setSpacing(true);
 
-        saveButton.addClickListener(e -> editRecord(record));
+        recordBinder.forField(prevPatientFld).asRequired("Выберите пациента!").bind(Record::getPatient, Record::setPatient);
+        recordBinder.forField(cabinetTypeFld).asRequired("Выберите тип кабинета!").bind(Record::getCabinetType, Record::setCabinetType);
+        recordBinder.forField(dateTxtFld).asRequired("Укажите дату приёма!").bind(Record::getRecDate, Record::setRecDate);
+        recordBinder.forField(timeFrTxtFld).asRequired("Укажите время начала приёма!").bind(Record::getTime_from, Record::setTime_from);
+        recordBinder.forField(timeToTxtFld).asRequired("Укажите время окончания приёма!").bind(Record::getTime_to, Record::setTime_to);
+
+        saveButton.addClickListener(event -> {
+                if (recordBinder.validate().isOk()) {
+                    this.editRecord(record);
+                } else {
+                    Notification notif = new Notification("Ошибка валидации! Заполните все необходимые поля!", Notification.Type.ERROR_MESSAGE);
+                    notif.setDelayMsec(2000);
+                    notif.setPosition(Position.TOP_RIGHT);
+                    notif.show(Page.getCurrent());
+                }
+            }
+        );
         saveButton.setWidth("300px");
 
         editWindowFieldsLayout.addComponent(prevPatientFld, 0,0, 1 ,0);
@@ -187,7 +210,23 @@ public final class EditInfoWindow extends Window {
         brdtTxtFld.setDateFormat("dd-MM-yyyy");
         brdtTxtFld.setValue(patient.getBirthDate());
 
-        saveButton.addClickListener(e -> editPatient(patient));
+        patientBinder.forField(nameTxtFld).withValidator(name -> name.length() >= 3, "Имя должно содержать хотя бы 3 буквы!").bind(Patient::getFirstName, Patient::setFirstName);
+        patientBinder.forField(surnTxtFld).withValidator(surname -> surname.length() >= 3, "Фамилия должна содержать хотя бы 3 буквы!").bind(Patient::getLastName, Patient::setLastName);
+        patientBinder.forField(phoneTxtFld).withValidator(phone -> phone.matches("^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$"), "Введите корректный номер телефона начиная с +7 или 8! ").bind(Patient::getEmail, Patient::setEmail);
+        patientBinder.forField(emailTxtFld).withValidator(new EmailValidator("Это не e-mail! Введите корректный e-mail!")).bind(Patient::getEmail, Patient::setEmail);
+        patientBinder.forField(brdtTxtFld).asRequired("Дата рождения не может быть пустой!").bind(Patient::getBirthDate, Patient::setBirthDate);
+
+        saveButton.addClickListener(e -> {
+                if (patientBinder.validate().isOk()) {
+                    this.editPatient(patient);
+                } else {
+                    Notification notif = new Notification("Ошибка валидации! Заполните все необходимые поля!", Notification.Type.ERROR_MESSAGE);
+                    notif.setDelayMsec(2000);
+                    notif.setPosition(Position.TOP_RIGHT);
+                    notif.show(Page.getCurrent());
+                }
+            }
+        );
         saveButton.setWidth("300px");
 
         patientLayoutOptions.addComponent(nameTxtFld, 0,0);

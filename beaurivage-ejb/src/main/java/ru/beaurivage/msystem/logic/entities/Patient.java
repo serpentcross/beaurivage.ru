@@ -1,7 +1,6 @@
 package ru.beaurivage.msystem.logic.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +12,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+@Data
 @Entity
 @Table(name = "patient")
 public class Patient implements Serializable {
@@ -23,31 +23,24 @@ public class Patient implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter @Setter
     private Long id;
 
     @Column(name = "first_name")
-    @Getter @Setter
     private String firstName;
 
     @Column(name = "middle_name")
-    @Getter @Setter
     private String middleName;
 
     @Column(name = "last_name")
-    @Getter @Setter
     private String lastName;
 
     @Column(name = "phone")
-    @Getter @Setter
     private String phone;
 
     @Column(name = "birth_date")
-    @Getter @Setter
     private LocalDate birthDate;
 
     @Column(name = "email")
-    @Getter @Setter
     private String email;
 
     @Override

@@ -1,7 +1,6 @@
 package ru.beaurivage.msystem.logic.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +11,7 @@ import javax.persistence.Table;
 
 import java.io.Serializable;
 
+@Data
 @Entity
 @Table(name = "service")
 public class Service implements Serializable {
@@ -22,18 +22,14 @@ public class Service implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter @Setter
     private Long id;
 
     @Column(name = "name")
-    @Getter @Setter
     private String name;
 
     @Column(name = "price")
-    @Getter @Setter
     private int price;
 
     @Column(name = "description")
-    @Getter @Setter
     private String description;
 }

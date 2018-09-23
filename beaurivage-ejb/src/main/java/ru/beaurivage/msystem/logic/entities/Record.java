@@ -1,7 +1,6 @@
 package ru.beaurivage.msystem.logic.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import ru.beaurivage.msystem.logic.enums.CabinetType;
 
@@ -19,6 +18,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
+@Data
 @Table(name = "record")
 public class Record implements Serializable {
 
@@ -28,28 +28,22 @@ public class Record implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter @Setter
     private Long id;
 
     @Column(name = "time_from")
-    @Getter @Setter
     private String time_from;
 
     @Column(name = "time_to")
-    @Getter @Setter
     private String time_to;
 
     @Column(name = "recdate")
-    @Getter @Setter
     private LocalDate recDate;
-
-    @Column(name = "cabinet")
-    @Getter @Setter
-    private CabinetType cabinetType;
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name= "patient")
-    @Getter @Setter
     private Patient patient;
+
+    @Column(name = "cabinet")
+    private CabinetType cabinetType;
 
 }

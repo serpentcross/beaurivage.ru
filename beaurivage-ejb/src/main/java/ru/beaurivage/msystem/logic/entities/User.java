@@ -1,7 +1,6 @@
 package ru.beaurivage.msystem.logic.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,21 +11,19 @@ import javax.persistence.Table;
 
 import java.io.Serializable;
 
+@Data
 @Entity
 @Table(name ="user")
 public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter @Setter
     private Long id;
 
     @Column(name = "username")
-    @Getter @Setter
     private String username;
 
     @Column(name = "password")
-    @Getter @Setter
     private String password;
 
     @Override

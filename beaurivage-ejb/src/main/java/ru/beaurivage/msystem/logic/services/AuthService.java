@@ -78,5 +78,4 @@ public class AuthService {
         cookie.setMaxAge(0);
         VaadinService.getCurrentResponse().addCookie(cookie);
     }
-
 }

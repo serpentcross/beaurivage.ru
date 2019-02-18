@@ -15,16 +15,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import java.io.Serializable;
+
 import java.time.LocalDate;
 
-@Entity
 @Data
+@Entity
 @Table(name = "record")
 public class Record implements Serializable {
 
-    public Record() {
-
-    }
+    public Record() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,9 +38,13 @@ public class Record implements Serializable {
     @Column(name = "recdate")
     private LocalDate recDate;
 
-    @ManyToOne(fetch= FetchType.EAGER)
+    @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name= "patient")
     private Patient patient;
+
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name= "service")
+    private Service service;
 
     @Column(name = "cabinet")
     private CabinetType cabinetType;

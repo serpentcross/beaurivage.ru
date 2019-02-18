@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import java.io.Serializable;
+
 import java.time.LocalDate;
 
 @Data
@@ -17,9 +18,7 @@ import java.time.LocalDate;
 @Table(name = "patient")
 public class Patient implements Serializable {
 
-    public Patient() {
-
-    }
+    public Patient() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,16 +49,14 @@ public class Patient implements Serializable {
 
         Patient patient = (Patient) o;
 
-        if (!id.equals(patient.id)) return false;
-        if (!firstName.equals(patient.firstName)) return false;
-        return birthDate != null ? birthDate.equals(patient.birthDate) : patient.birthDate == null;
+        return id.equals(patient.id) && firstName.equals(patient.firstName) && birthDate.equals(patient.birthDate);
     }
 
     @Override
     public int hashCode() {
         int result = id.hashCode();
         result = 31 * result + firstName.hashCode();
-        result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
+        result = 31 * result + birthDate.hashCode();
         return result;
     }
 

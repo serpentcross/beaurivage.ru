@@ -1,7 +1,6 @@
 package ru.beaurivage.msystem.ui.constants;
 
 public class UILegend {
-
     public static final String UNAME_TEXTBOX = "логин";
     public static final String PWORD_TEXTBOX = "пароль";
 

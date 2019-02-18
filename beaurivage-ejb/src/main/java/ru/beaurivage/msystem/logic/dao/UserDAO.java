@@ -6,4 +6,5 @@ import javax.ejb.Local;
 public interface UserDAO {
 
     boolean getAuthState(String login, String password);
+
 }

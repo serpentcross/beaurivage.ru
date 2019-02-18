@@ -1,11 +1,15 @@
 package ru.beaurivage.msystem.ui;
 
 import com.vaadin.annotations.Theme;
+
 import com.vaadin.navigator.Navigator;
+
 import com.vaadin.server.VaadinRequest;
+
 import com.vaadin.ui.UI;
 
 import ru.beaurivage.msystem.logic.services.AuthService;
+
 import ru.beaurivage.msystem.ui.constants.ViewsNaming;
 import ru.beaurivage.msystem.ui.viewspublic.PublicErrorView;
 import ru.beaurivage.msystem.ui.viewspublic.PublicMainView;
@@ -17,12 +21,11 @@ import ru.beaurivage.msystem.ui.viewssecured.SecuredServicesView;
 public class VaadinUI extends UI {
 
     private static Navigator navigator;
-    private PublicMainView publicMainView;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
 
-        publicMainView = new PublicMainView();
+        PublicMainView publicMainView = new PublicMainView();
         publicMainView.setStyleName("background-main-color");
 
         navigator = new Navigator(this, this);

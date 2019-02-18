@@ -1,8 +1,9 @@
 package ru.beaurivage.msystem.ui.modals;
 
 import com.vaadin.data.Binder;
-import com.vaadin.data.validator.EmailValidator;
+
 import com.vaadin.server.Page;
+
 import com.vaadin.shared.Position;
 
 import com.vaadin.ui.Alignment;
@@ -280,5 +281,4 @@ public final class EditInfoWindow extends Window {
         patientDAO.save(patient);
         this.close();
     }
-
 }

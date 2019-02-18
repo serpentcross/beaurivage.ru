@@ -12,23 +12,23 @@ import com.vaadin.ui.Window;
 import ru.beaurivage.msystem.logic.dao.RecordDAO;
 import ru.beaurivage.msystem.logic.entities.Record;
 import ru.beaurivage.msystem.logic.util.EjbUtil;
+
 import ru.beaurivage.msystem.ui.constants.Notifications;
 import ru.beaurivage.msystem.ui.util.NotificationFactory;
 
 public class ConfirmWindow extends Window {
 
     private RecordDAO recordDAO;
-    private FormLayout formLayout;
-
-    private Button acceptButton = new Button("Да");
-    private Button cancelButton = new Button("Нет", event -> close());
 
     public ConfirmWindow(Record record) {
 
+        Button acceptButton = new Button("Да");
         acceptButton.setWidth("130px");
+
+        Button cancelButton = new Button("Нет", event -> close());
         cancelButton.setWidth("130px");
 
-        formLayout = new FormLayout();
+        FormLayout formLayout = new FormLayout();
         GridLayout buttonLayout = new GridLayout(2 ,1);
 
         setCaption("Удаление записи № " + record.getId());
@@ -62,6 +62,4 @@ public class ConfirmWindow extends Window {
         NotificationFactory.constructNotification(Notifications.RECORD_DELETED_SUCCESS, Notification.Type.HUMANIZED_MESSAGE, Page.getCurrent());
         this.close();
     }
-
-
 }

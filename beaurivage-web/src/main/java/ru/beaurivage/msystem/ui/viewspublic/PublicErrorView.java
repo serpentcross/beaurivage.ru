@@ -21,22 +21,17 @@ import java.io.File;
 
 public class PublicErrorView extends CustomComponent implements View {
 
-    private GridLayout errorLogoLayout;
-    private VerticalLayout basicLayout;
-
-    private Button goBackBtn;
-
     public PublicErrorView() {
 
         setWidth(CssStyles.WIDTH_100_PERCENTS);
 
-        errorLogoLayout = new GridLayout(1,2);
+        GridLayout errorLogoLayout = new GridLayout(1, 2);
 
         String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
         FileResource resource = new FileResource(new File(basepath + "/WEB-INF/images/notfound.png"));
         Image errorLogo = new Image(null, resource);
 
-        goBackBtn = new Button("вернуться назад", e -> VaadinUI.getNavigation().navigateTo(ViewsNaming.PUBLIC_LOGIN_VIEW));
+        Button goBackBtn = new Button("вернуться назад", e -> VaadinUI.getNavigation().navigateTo(ViewsNaming.PUBLIC_LOGIN_VIEW));
         goBackBtn.setWidth(CssStyles.WIDTH_250_PX);
         goBackBtn.setStyleName("ml-button-13");
 
@@ -46,7 +41,7 @@ public class PublicErrorView extends CustomComponent implements View {
         errorLogoLayout.addComponent(goBackBtn, 0, 1);
         errorLogoLayout.setComponentAlignment(goBackBtn, Alignment.MIDDLE_CENTER);
 
-        basicLayout = new VerticalLayout(errorLogoLayout);
+        VerticalLayout basicLayout = new VerticalLayout(errorLogoLayout);
         basicLayout.setSizeFull();
         basicLayout.setSpacing(true);
         basicLayout.setComponentAlignment(errorLogoLayout, Alignment.MIDDLE_CENTER);
@@ -57,7 +52,5 @@ public class PublicErrorView extends CustomComponent implements View {
     }
 
     @Override
-    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-
-    }
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {}
 }

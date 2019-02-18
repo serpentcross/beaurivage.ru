@@ -225,7 +225,7 @@ public class SecuredPatientsView extends CustomComponent implements View {
 
     private void refreshPatientsTable() {
 
-        patientsTable.setColumns(new String[]{});
+        patientsTable.setColumns();
         patientsTable.setItems(patientDAO.getAll());
 
         ButtonRenderer editButtonRenderer = new ButtonRenderer(clickEvent -> {
@@ -247,7 +247,7 @@ public class SecuredPatientsView extends CustomComponent implements View {
         patientsTable.addColumn(rec -> VaadinIcons.EDIT.getHtml() , editButtonRenderer).setWidth(65);
 
         for (Grid.Column singleColumn : patientsTable.getColumns()) {
-            singleColumn.setStyleGenerator(item -> "v-align-center");
+            singleColumn.setStyleGenerator(item -> "v-grid-column-header-content");
         }
     }
 

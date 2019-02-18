@@ -26,8 +26,10 @@ import com.vaadin.ui.renderers.ButtonRenderer;
 
 import ru.beaurivage.msystem.logic.dao.PatientDAO;
 import ru.beaurivage.msystem.logic.dao.RecordDAO;
+import ru.beaurivage.msystem.logic.dao.ServiceDAO;
 import ru.beaurivage.msystem.logic.entities.Patient;
 import ru.beaurivage.msystem.logic.entities.Record;
+import ru.beaurivage.msystem.logic.entities.Service;
 import ru.beaurivage.msystem.logic.enums.CabinetType;
 import ru.beaurivage.msystem.logic.services.AuthService;
 import ru.beaurivage.msystem.logic.util.EjbUtil;
@@ -50,12 +52,14 @@ import java.util.List;
 public class SecuredRecordsView extends CustomComponent implements View {
 
     private PatientDAO patientDAO;
+    private ServiceDAO serviceDAO;
     private RecordDAO recordDAO;
 
     private GridLayout navigationOptionsLayout;
     private GridLayout newPatientOptionsContainer;
 
     private ComboBox<Patient> prevPatientFld;
+    private ComboBox<Service> prevServiceFld;
     private ComboBox<CabinetType> cabinetSelection;
 
     private DateField dateTxtFld;
@@ -101,6 +105,7 @@ public class SecuredRecordsView extends CustomComponent implements View {
         setStyleName("background-main-color");
 
         patientDAO = EjbUtil.getLocalBean(PatientDAO.class);
+        serviceDAO = EjbUtil.getLocalBean(ServiceDAO.class);
         recordDAO = EjbUtil.getLocalBean(RecordDAO.class);
 
         prevPatientFld = new ComboBox<>();
@@ -108,6 +113,12 @@ public class SecuredRecordsView extends CustomComponent implements View {
         prevPatientFld.setPlaceholder("Поиск ранее записанного пациента");
         prevPatientFld.setWidth(CssStyles.WIDTH_100_PERCENTS);
         prevPatientFld.setEmptySelectionAllowed(true);
+
+        prevServiceFld = new ComboBox<>();
+        prevServiceFld.setItems(serviceDAO.getAll());
+        prevServiceFld.setPlaceholder("Выбрать услугу");
+        prevServiceFld.setWidth(CssStyles.WIDTH_100_PERCENTS);
+        prevServiceFld.setEmptySelectionAllowed(false);
 
         cabinetSelection = new ComboBox<>();
         cabinetSelection.setItems(CabinetType.values());
@@ -165,19 +176,20 @@ public class SecuredRecordsView extends CustomComponent implements View {
         timeToTxtFld.setTextInputAllowed(false);
 
         recordBinder.forField(prevPatientFld).asRequired("Выберите пациента!").bind(Record::getPatient, Record::setPatient);
+        recordBinder.forField(prevServiceFld).asRequired("Выберите услугу!").bind(Record::getService, Record::setService);
         recordBinder.forField(cabinetSelection).asRequired("Выберите тип кабинета!").bind(Record::getCabinetType, Record::setCabinetType);
         recordBinder.forField(dateTxtFld).asRequired("Укажите дату приёма!").bind(Record::getRecDate, Record::setRecDate);
         recordBinder.forField(timeFrTxtFld).asRequired("Укажите время начала приёма!").bind(Record::getTime_from, Record::setTime_from);
         recordBinder.forField(timeToTxtFld).asRequired("Укажите время окончания приёма!").bind(Record::getTime_to, Record::setTime_to);
 
-        addRecordBtn = new Button("создать запись", event -> {
+        addRecordBtn = new Button("внести новую запись", event -> {
                 if (recordBinder.validate().isOk()) {
                     this.createRecord();
                 } else {
-                    Notification notif = new Notification("Ошибка валидации! Заполните все необходимые поля!", Notification.Type.ERROR_MESSAGE);
-                    notif.setDelayMsec(2000);
-                    notif.setPosition(Position.TOP_RIGHT);
-                    notif.show(Page.getCurrent());
+                    Notification errorNotification = new Notification("Ошибка валидации! Заполните все необходимые поля!", Notification.Type.ERROR_MESSAGE);
+                    errorNotification.setDelayMsec(2000);
+                    errorNotification.setPosition(Position.TOP_RIGHT);
+                    errorNotification.show(Page.getCurrent());
                 }
             }
         );
@@ -196,7 +208,9 @@ public class SecuredRecordsView extends CustomComponent implements View {
         newPatientOptionsContainer = new GridLayout(3,6);
         newPatientOptionsContainer.setSpacing(true);
         newPatientOptionsContainer.setSizeFull();
-        newPatientOptionsContainer.addComponent(prevPatientFld, 0,0,1,0);
+        newPatientOptionsContainer.addComponent(prevPatientFld, 0,0);
+        newPatientOptionsContainer.setComponentAlignment(prevPatientFld, Alignment.TOP_LEFT);
+        newPatientOptionsContainer.addComponent(prevServiceFld, 1,0);
         newPatientOptionsContainer.setComponentAlignment(prevPatientFld, Alignment.TOP_LEFT);
         newPatientOptionsContainer.addComponent(cabinetSelection, 2,0);
         newPatientOptionsContainer.setComponentAlignment(cabinetSelection, Alignment.TOP_RIGHT);
@@ -222,12 +236,12 @@ public class SecuredRecordsView extends CustomComponent implements View {
         basicLayout.setSizeFull();
 
         setCompositionRoot(basicLayout);
-
     }
 
     private void prepareFormForNextRequest() {
 
         prevPatientFld.setValue(null);
+        prevServiceFld.setValue(null);
         cabinetSelection.setValue(null);
         timeFrTxtFld.setValue(null);
         timeToTxtFld.setValue(null);
@@ -238,9 +252,12 @@ public class SecuredRecordsView extends CustomComponent implements View {
     private void createRecord() {
 
         Patient patient = prevPatientFld.getValue();
+        Service service = prevServiceFld.getValue();
+
         Record record = new Record();
 
         record.setPatient(patient);
+        record.setService(service);
         record.setRecDate(dateTxtFld.getValue());
         record.setTime_from(timeFrTxtFld.getValue());
         record.setTime_to(timeToTxtFld.getValue());
@@ -278,21 +295,21 @@ public class SecuredRecordsView extends CustomComponent implements View {
         deleteButtonRenderer.setHtmlContentAllowed(true);
         editButtonRenderer.setHtmlContentAllowed(true);
 
-        recordsTable.setColumns(new String[]{});
+        recordsTable.setColumns();
         recordsTable.setItems(records);
         recordsTable.addColumn(Record::getId).setCaption("#").setWidth(60).setId("1");
         recordsTable.addColumn(d-> d.getRecDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))).setCaption("Дата").setWidth(150).setId("2");
         recordsTable.addColumn(Record::getPatient).setCaption("Пациент").setId("3");
-        recordsTable.addColumn(Record::getTime_from).setCaption("Начало приёма").setWidth(150).setId("4");
-        recordsTable.addColumn(Record::getTime_to).setCaption("Конец приёма").setWidth(150).setId("5");
-        recordsTable.addColumn(Record::getCabinetType).setCaption("Тип кабинета").setWidth(200).setId("6");
+        recordsTable.addColumn(Record::getService).setCaption("Услуга").setId("4");
+        recordsTable.addColumn(Record::getTime_from).setCaption("Начало приёма").setWidth(150).setId("5");
+        recordsTable.addColumn(Record::getTime_to).setCaption("Конец приёма").setWidth(150).setId("6");
+        recordsTable.addColumn(Record::getCabinetType).setCaption("Тип кабинета").setWidth(200).setId("7");
         recordsTable.addColumn(rec -> VaadinIcons.TRASH.getHtml(), deleteButtonRenderer).setWidth(65);
         recordsTable.addColumn(rec -> VaadinIcons.EDIT.getHtml() , editButtonRenderer).setWidth(65);
 
         for (Grid.Column singleColumn : recordsTable.getColumns()) {
-            singleColumn.setStyleGenerator(item -> "v-align-center");
+            singleColumn.setStyleGenerator(item -> "v-grid-column-header-content");
         }
-
     }
 
     private void navigateToPatientsOptions(Button.ClickEvent event) {

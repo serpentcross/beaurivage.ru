@@ -12,9 +12,9 @@ import java.util.Map;
 
 class UserService {
 
-    private static SecureRandom random = new SecureRandom();
+    private static final SecureRandom random = new SecureRandom();
 
-    private static Map<String, String> rememberedUsers = new HashMap<>();
+    private static final Map<String, String> rememberedUsers = new HashMap<>();
 
     static boolean isAuthenticUser(String username, String password) {
         UserDAO userDAO = EjbUtil.getLocalBean(UserDAO.class);

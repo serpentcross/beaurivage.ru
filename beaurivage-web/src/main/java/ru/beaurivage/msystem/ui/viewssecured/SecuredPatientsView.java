@@ -2,8 +2,6 @@ package ru.beaurivage.msystem.ui.viewssecured;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Binder;
-import com.vaadin.data.Validator;
-import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -37,36 +35,35 @@ import ru.beaurivage.msystem.ui.modals.EditInfoWindow;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Theme("beaurivage")
 public class SecuredPatientsView extends CustomComponent implements View {
 
-    private PatientDAO patientDAO;
+    private final PatientDAO patientDAO;
 
-    private GridLayout navigationOptionsLayout;
-    private GridLayout newPatientOptionsContainer;
+    private final GridLayout navigationOptionsLayout;
+    private final GridLayout newPatientOptionsContainer;
 
-    private Button navRecordsTableBtn;
-    private Button navServicesTableBtn;
-    private Button logOutBtn;
+    private final Button navRecordsTableBtn;
+    private final Button navServicesTableBtn;
+    private final Button logOutBtn;
 
-    private Label horizontalBar;
+    private final Label horizontalBar;
 
-    private TextField surnTxtFld;
-    private TextField nameTxtFld;
-    private TextField middTxtFld;
-    private TextField phoneTxtFld;
-    private TextField emailTxtFld;
-    private DateField brdtTxtFld;
+    private final TextField surnTxtFld;
+    private final TextField nameTxtFld;
+    private final TextField middTxtFld;
+    private final TextField phoneTxtFld;
+    private final TextField emailTxtFld;
+    private final DateField brdtTxtFld;
 
-    private Button addPatientBtn;
+    private final Button addPatientBtn;
 
-    private Grid<Patient> patientsTable;
+    private final Grid<Patient> patientsTable;
 
     private EditInfoWindow editInfoWindow;
 
-    private Binder<Patient> patientBinder = new Binder<>();
+    private final Binder<Patient> patientBinder = new Binder<Patient>();
 
     public SecuredPatientsView() {
 
@@ -228,7 +225,7 @@ public class SecuredPatientsView extends CustomComponent implements View {
         patientsTable.setColumns();
         patientsTable.setItems(patientDAO.getAll());
 
-        ButtonRenderer editButtonRenderer = new ButtonRenderer(clickEvent -> {
+        var editButtonRenderer = new ButtonRenderer(clickEvent -> {
             Patient selectedPatient = (Patient) clickEvent.getItem();
             editInfoWindow = new EditInfoWindow(selectedPatient);
             UI.getCurrent().addWindow(editInfoWindow);
@@ -246,9 +243,7 @@ public class SecuredPatientsView extends CustomComponent implements View {
         patientsTable.addColumn(Patient::getEmail).setCaption(UILegend.TXT_FIELD_EMAIL).setId("7");
         patientsTable.addColumn(rec -> VaadinIcons.EDIT.getHtml() , editButtonRenderer).setWidth(65);
 
-        for (Grid.Column singleColumn : patientsTable.getColumns()) {
-            singleColumn.setStyleGenerator(item -> "v-grid-column-header-content");
-        }
+        patientsTable.getColumns().forEach(singleColumn -> singleColumn.setStyleGenerator(item -> "v-grid-column-header-content"));
     }
 
     private void navigateToRecordsOptions(Button.ClickEvent event) {

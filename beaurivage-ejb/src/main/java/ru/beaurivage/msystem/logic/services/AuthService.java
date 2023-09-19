@@ -44,8 +44,10 @@ public class AuthService {
     }
 
     private static Optional<Cookie> getRememberMeCookie() {
-        Cookie[] cookies = VaadinService.getCurrentRequest().getCookies();
-        return Arrays.stream(cookies).filter(c -> c.getName().equals(COOKIE_NAME)).findFirst();
+        return Arrays
+                .stream(VaadinService.getCurrentRequest().getCookies())
+                .filter(c -> c.getName().equals(COOKIE_NAME))
+                .findFirst();
     }
 
     private static boolean loginRememberedUser() {

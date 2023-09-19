@@ -30,32 +30,32 @@ import java.util.List;
 @Theme("beaurivage")
 public class SecuredServicesView extends CustomComponent implements View {
 
-    private ServiceDAO serviceDAO;
+    private final ServiceDAO serviceDAO;
 
-    private GridLayout navigationOptionsLayout;
-    private GridLayout newServiceOptionsContainer;
+    private final GridLayout navigationOptionsLayout;
+    private final GridLayout newServiceOptionsContainer;
 
-    private Button navRecordsTableBtn;
-    private Button navPatientsTableBtn;
+    private final Button navRecordsTableBtn;
+    private final Button navPatientsTableBtn;
 
-    private Button logOutBtn;
+    private final Button logOutBtn;
 
-    private Label horizontalBar;
+    private final Label horizontalBar;
 
-    private TextField srvNameFld;
-    private TextField srvPriceFld;
+    private final TextField srvNameFld;
+    private final TextField srvPriceFld;
 
-    private TextArea srvDescFld;
+    private final TextArea srvDescFld;
 
-    private Button addServiceBtn;
-    private Grid<Service> servicesTable;
+    private final Button addServiceBtn;
+    private final Grid<Service> servicesTable;
 
     private List<Service> services = new ArrayList<>();
 
     private EditInfoWindow editInfoWindow;
     private ConfirmWindow confirmWindow;
 
-    private Binder<Service> serviceBinder = new Binder<>();
+    private final Binder<Service> serviceBinder = new Binder<>();
 
     public SecuredServicesView() {
 
@@ -174,7 +174,7 @@ public class SecuredServicesView extends CustomComponent implements View {
 
         services = serviceDAO.getAll();
 
-        ButtonRenderer viewButtonRenderer = new ButtonRenderer(clickEvent -> {
+        var viewButtonRenderer = new ButtonRenderer(clickEvent -> {
             Service selectedService = (Service) clickEvent.getItem();
             Notification.show(selectedService.getName() + " items selected");
         });
@@ -188,9 +188,7 @@ public class SecuredServicesView extends CustomComponent implements View {
         servicesTable.addColumn(Service::getDescription).setCaption("Описание").setId("3");
         servicesTable.addColumn(Service::getPrice).setCaption("Цена").setWidth(150).setId("5");
 
-        for (Grid.Column singleColumn : servicesTable.getColumns()) {
-            singleColumn.setStyleGenerator(item -> "v-grid-column-header-content");
-        }
+        servicesTable.getColumns().forEach(singleColumn -> singleColumn.setStyleGenerator(item -> "v-grid-column-header-content"));
     }
 
     private void navigateToRecordsOptions(Button.ClickEvent event) {

@@ -5,7 +5,7 @@ public enum CabinetType {
     LASER("Лазерный кабинет"),
     PROCEDURE("Процедурный кабинет");
 
-    private String description;
+    private final String description;
 
     CabinetType(String description) {
         this.description = description;
@@ -15,4 +15,5 @@ public enum CabinetType {
     public String toString(){
         return description;
     }
+
 }

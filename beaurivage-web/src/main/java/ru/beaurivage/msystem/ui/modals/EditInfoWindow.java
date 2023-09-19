@@ -32,10 +32,10 @@ import java.util.ArrayList;
 
 public final class EditInfoWindow extends Window {
 
-    private PatientDAO patientDAO = EjbUtil.getLocalBean(PatientDAO.class);
-    private RecordDAO recordDAO = EjbUtil.getLocalBean(RecordDAO.class);
+    private final PatientDAO patientDAO = EjbUtil.getLocalBean(PatientDAO.class);
+    private final RecordDAO recordDAO = EjbUtil.getLocalBean(RecordDAO.class);
 
-    private VerticalLayout basicLayout = new VerticalLayout();
+    private final VerticalLayout basicLayout = new VerticalLayout();
 
     private ComboBox<Patient> prevPatientFld;
 
@@ -51,13 +51,13 @@ public final class EditInfoWindow extends Window {
     private TextField emailTxtFld;
     private DateField brdtTxtFld;
 
-    private Button saveButton = new Button("Сохранить");
+    private final Button saveButton = new Button("Сохранить");
 
-    private GridLayout editWindowButtonLayout;
-    private FormLayout content;
+    private final GridLayout editWindowButtonLayout;
+    private final FormLayout content;
 
-    private Binder<Patient> patientBinder = new Binder<>();
-    private Binder<Record> recordBinder = new Binder<>();
+    private final Binder<Patient> patientBinder = new Binder<>();
+    private final Binder<Record> recordBinder = new Binder<>();
 
     public EditInfoWindow(Record record, ArrayList<String> timeOptionList) {
 

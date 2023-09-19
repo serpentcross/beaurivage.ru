@@ -2,28 +2,21 @@ package ru.beaurivage.msystem.logic.entities;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
-
 import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name ="user")
 public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "username")
     private String username;
-
-    @Column(name = "password")
     private String password;
 
     @Override
@@ -42,4 +35,5 @@ public class User implements Serializable {
         result = 31 * result + username.hashCode();
         return result;
     }
+
 }

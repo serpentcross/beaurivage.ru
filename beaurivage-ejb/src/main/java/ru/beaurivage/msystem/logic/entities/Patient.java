@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import java.io.Serializable;
 
@@ -15,7 +14,6 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "patient")
 public class Patient implements Serializable {
 
     public Patient() {}
@@ -33,13 +31,11 @@ public class Patient implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "phone")
     private String phone;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @Column(name = "email")
     private String email;
 
     @Override
@@ -64,4 +60,5 @@ public class Patient implements Serializable {
     public String toString() {
         return lastName + " " + firstName + " " + middleName;
     }
+
 }

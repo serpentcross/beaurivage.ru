@@ -51,40 +51,40 @@ import java.util.List;
 @Theme("beaurivage")
 public class SecuredRecordsView extends CustomComponent implements View {
 
-    private PatientDAO patientDAO;
-    private ServiceDAO serviceDAO;
-    private RecordDAO recordDAO;
+    private final PatientDAO patientDAO;
+    private final ServiceDAO serviceDAO;
+    private final RecordDAO recordDAO;
 
-    private GridLayout navigationOptionsLayout;
-    private GridLayout newPatientOptionsContainer;
+    private final GridLayout navigationOptionsLayout;
+    private final GridLayout newPatientOptionsContainer;
 
-    private ComboBox<Patient> prevPatientFld;
-    private ComboBox<Service> prevServiceFld;
-    private ComboBox<CabinetType> cabinetSelection;
+    private final ComboBox<Patient> prevPatientFld;
+    private final ComboBox<Service> prevServiceFld;
+    private final ComboBox<CabinetType> cabinetSelection;
 
-    private DateField dateTxtFld;
+    private final DateField dateTxtFld;
 
-    private ComboBox<String> timeFrTxtFld;
-    private ComboBox<String> timeToTxtFld;
+    private final ComboBox<String> timeFrTxtFld;
+    private final ComboBox<String> timeToTxtFld;
 
-    private Button navPatientsTableBtn;
-    private Button navServicesTableBtn;
-    private Button logOutBtn;
-    private Button previewRecordBtn;
+    private final Button navPatientsTableBtn;
+    private final Button navServicesTableBtn;
+    private final Button logOutBtn;
+    private final Button previewRecordBtn;
 
-    private Label horizontalBar;
+    private final Label horizontalBar;
 
-    private Button addRecordBtn;
-    private Grid<Record> recordsTable;
+    private final Button addRecordBtn;
+    private final Grid<Record> recordsTable;
 
     private List<Record> records = new ArrayList<>();
 
     private EditInfoWindow editInfoWindow;
     private ConfirmWindow confirmWindow;
 
-    private Binder<Record> recordBinder = new Binder<>();
+    private final Binder<Record> recordBinder = new Binder<>();
 
-    private ArrayList<String> timeOptionList = new ArrayList<String>() {{
+    private final ArrayList<String> timeOptionList = new ArrayList<>() {{
         add("10:00");
         add("11:00");
         add("12:00");
@@ -274,18 +274,18 @@ public class SecuredRecordsView extends CustomComponent implements View {
 
         records = recordDAO.getAll();
 
-        ButtonRenderer deleteButtonRenderer = new ButtonRenderer(clickEvent -> {
+        var deleteButtonRenderer = new ButtonRenderer(clickEvent -> {
             confirmWindow = new ConfirmWindow((Record) clickEvent.getItem());
             UI.getCurrent().addWindow(confirmWindow);
             confirmWindow.addCloseListener(e -> refreshMainTable());
         });
 
-        ButtonRenderer viewButtonRenderer = new ButtonRenderer(clickEvent -> {
+        var viewButtonRenderer = new ButtonRenderer(clickEvent -> {
             Record selectedRecord = (Record) clickEvent.getItem();
             Notification.show(selectedRecord.getPatient().getFirstName() + " items selected");
         });
 
-        ButtonRenderer editButtonRenderer = new ButtonRenderer(clickEvent -> {
+        var editButtonRenderer = new ButtonRenderer(clickEvent -> {
             editInfoWindow = new EditInfoWindow((Record) clickEvent.getItem(), timeOptionList);
             UI.getCurrent().addWindow(editInfoWindow);
             editInfoWindow.addCloseListener(e -> refreshMainTable());
@@ -307,9 +307,8 @@ public class SecuredRecordsView extends CustomComponent implements View {
         recordsTable.addColumn(rec -> VaadinIcons.TRASH.getHtml(), deleteButtonRenderer).setWidth(65);
         recordsTable.addColumn(rec -> VaadinIcons.EDIT.getHtml() , editButtonRenderer).setWidth(65);
 
-        for (Grid.Column singleColumn : recordsTable.getColumns()) {
-            singleColumn.setStyleGenerator(item -> "v-grid-column-header-content");
-        }
+        recordsTable.getColumns().forEach(singleColumn -> singleColumn.setStyleGenerator(item -> "v-grid-column-header-content"));
+
     }
 
     private void navigateToPatientsOptions(Button.ClickEvent event) {

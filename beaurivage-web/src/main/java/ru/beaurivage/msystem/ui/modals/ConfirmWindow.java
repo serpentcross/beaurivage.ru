@@ -18,7 +18,7 @@ import ru.beaurivage.msystem.ui.util.NotificationFactory;
 
 public class ConfirmWindow extends Window {
 
-    private RecordDAO recordDAO;
+    private final RecordDAO recordDAO;
 
     public ConfirmWindow(Record record) {
 
